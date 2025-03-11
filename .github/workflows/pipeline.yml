@@ -1,0 +1,37 @@
+name: deployment Pipeline
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: clonar repositorio
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup PHP with tools
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: phpunit, pecl, composer
+      - name: instalar dependencias php
+        run: composer install
+      - name: preparando laravel
+        run:  |
+          cp .env.ci .env
+          php artisan key:generate
+      # - name: Ejecutando test api laravel
+      #   run: php artisan test
+
+      # - name: setup Node
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: '20'
+      # - name: instalar dependencias node
+      #   run: npm i
+      # - name: build frontend
+      #   run: npm run build
