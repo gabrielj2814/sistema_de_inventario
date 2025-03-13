@@ -11,7 +11,7 @@ class UserRootSeeder extends Seeder
 {
 
     public function __construct(
-        protected UserRepository $UserRepository,
+        protected UserRepository $userRepository
     ){}
     /**
      * Run the database seeds.
@@ -29,9 +29,9 @@ class UserRootSeeder extends Seeder
                 "password" => env("DEBUG_PASSWORD_ADMIN")
             ];
 
-            $rootDB=$this->UserRepository->registrar($datos);
+            $rootDB=$this->userRepository->registrar($datos);
             $datos["id"]=$rootDB->id;
-            $this->UserRepository->actualizarClave($datos);
+            $this->userRepository->actualizarClave($datos);
         }
 
     }

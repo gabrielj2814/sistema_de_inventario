@@ -1,8 +1,7 @@
-<?
+<?php
 
 namespace App\Repository;
 
-use App\Contracts\Repository;
 use App\Contracts\RepositoryWithSoftDelete;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
@@ -87,6 +86,9 @@ class UserRepository implements RepositoryWithSoftDelete {
         User::onlyTrashed()->find($id)->forceDelete();
     }
 
+    function consultUserForEmail($email): Model | null {
+        return User::where("email","=",$email)->first();
+    }
+
 }
 
-?>
