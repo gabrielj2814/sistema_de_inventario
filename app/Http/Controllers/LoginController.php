@@ -38,7 +38,7 @@ class LoginController extends Controller
         }
         Log::info("Login Ok => {".$email."}");
 
-        $token=$user->createToken($user->id)->plainTextToken;
+        $token=$user->createToken($user->id, ['*'], now()->addWeek())->plainTextToken;
 
         $mensaje="Ok";
         $data=[

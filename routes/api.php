@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -11,16 +14,25 @@ Route::get('/user', function (Request $request) {
 
 Route::prefix("v1")->group(function(){
 
-    Route::post("/login",[LoginController::class,"login"])->name("api.login");
-    Route::get("/logout",[LoginController::class,"logout"])->middleware("auth:sanctum")->name("api.logout");
-    Route::get("/remove-all-session",[LoginController::class,"removerAllSession"])->middleware("auth:sanctum")->name("api.removeAllSession");
+    Route::post("/login",              [LoginController::class,"login"])->name("api.login");
+    Route::get("/logout",              [LoginController::class,"logout"])->middleware("auth:sanctum")->name("api.logout");
+    Route::get("/remove-all-session",  [LoginController::class,"removerAllSession"])->middleware("auth:sanctum")->name("api.removeAllSession");
+
+    // Company
+    Route::prefix("company")->group(function(){
+        Route::get("/",                [CompanyController::class,"consultAllCompanies"])->middleware("auth:sanctum")->name("api.company.all");
+        // Route::post("/",               [CompanyController::class,"consultCompanyForId"])->name("api.company.create");
+        // Route::put("/{id}",               [CompanyController::class,"consultCompanyForId"])->name("api.company.create");
+        // Route::delete("/{id}",               [CompanyController::class,"consultCompanyForId"])->name("api.company.create");
+        Route::get("/{id}",            [CompanyController::class,"consultCompanyForId"])->name("api.company.id");
+    });
 
     Route::prefix("customer")->group(function(){
 
     });
 
     Route::prefix("category")->group(function(){
-
+        Route::get("/",[CustomerController::class,""])->name("");
     });
 
     Route::prefix("product")->group(function(){
