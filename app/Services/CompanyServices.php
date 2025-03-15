@@ -21,6 +21,17 @@ class CompanyServices {
         return $this->companyRepository->consultarPorId($id);
     }
 
+    public function creatCompany($data){
+        return $this->companyRepository->registrar($data);
+    }
+
+    public function updateCompany($data): Model{
+        return $this->companyRepository->actualizar($data);
+    }
+
+
+
+
 
 
 }

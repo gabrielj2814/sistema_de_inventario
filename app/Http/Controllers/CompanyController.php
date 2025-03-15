@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\CreatCompanyData;
 use App\Helpers\ApiResponse;
+use App\Http\Requests\CreatCompanyFormRequest;
 use App\Services\CompanyServices;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -34,5 +36,52 @@ class CompanyController extends Controller
 
         $mensaje="Consulta completado";
         return ApiResponse::success($consultResponse,$mensaje,200);
+    }
+
+    public function creatCompany(CreatCompanyFormRequest $request): JsonResponse{
+
+        $data=[
+            "name" => $request->name,
+            "email" => $request->email,
+            "phone" => $request->phone,
+            "address" => $request->address,
+        ];
+
+        $createdCompany=$this->companyServices->creatCompany($data);
+
+        // if(!$createdCompany){
+
+        //     $mensaje="Error The company was not created successfully";
+        //     return ApiResponse::error(null,$mensaje,500);
+        // }
+
+
+        $mensaje="The company was created successfully";
+        return ApiResponse::success($createdCompany,$mensaje,200);
+    }
+    // TODO:probar el UNIQUE form Request (crear y editar) correo y telefono
+    // TODO:probar
+    public function updateCompany(Request $request, $id):JsonResponse{
+        $data=[
+            "id" => $request->id,
+            "name" => $request->name,
+            "email" => $request->email,
+            "phone" => $request->phone,
+            "address" => $request->address,
+        ];
+
+        if($data["id"]!=$id){
+            $error=[
+                "id" => "the id on body and id on the path not same"
+            ];
+            return ApiResponse::error("Error",400,$error);
+        }
+
+        $updatedCompany=$this->companyServices->updateCompany($data);
+
+
+        $mensaje="The company was updated successfully";
+        return ApiResponse::success($updatedCompany,$mensaje,200);
+
     }
 }
