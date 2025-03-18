@@ -32,8 +32,8 @@ class CreatCompanyFormRequest extends FormRequest
         return [
             //
             "name"    =>    "required|string|max:255",
-            "email"   =>    "required|string|max:255|email:rfc,dns",
-            "phone"   =>    "required|string|max:15|min:11",
+            "email"   =>    "required|string|unique:App\Models\Company,email|max:255|email:rfc,dns",
+            "phone"   =>    "required|string|unique:App\Models\Company,phone|max:15|min:11",
             "address" =>    "required|string|max:255",
 
         ];

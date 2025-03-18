@@ -32,8 +32,8 @@ class UpdateCompanyFormRequest extends FormRequest
             //
             "id"    =>    "required|exists:App\Models\Company,id",
             "name"    =>    "required|string|max:255",
-            "email"   =>    "required|string|max:255|email:rfc,dns",
-            "phone"   =>    "required|string|max:15|min:11",
+            "email"   =>    "required|string|unique:App\Models\Company,email|max:255|email:rfc,dns",
+            "phone"   =>    "required|string|unique:App\Models\Company,phone|max:15|min:11",
             "address" =>    "required|string|max:255",
 
         ];
@@ -47,10 +47,12 @@ class UpdateCompanyFormRequest extends FormRequest
             "name.string"   => "the field is type string",
             "name.max"      => "the max of field is 255 characters",
             "email.required" => "the field is required",
+            // "email.unique" => "the email is already in use by another company",
             "email.string"   => "the field is type string",
             "email.max"      => "the max of field is 255 characters",
             "email.email"      => "the format of email is invalid",
             "phone.required" => "the field is required",
+            // "phone.unique" => "the phone is already in use by another company",
             "phone.string"   => "the field is type string",
             "phone.max"      => "the max of field is 255 characters",
             "phone.min"      => "the min of field is 11 characters",

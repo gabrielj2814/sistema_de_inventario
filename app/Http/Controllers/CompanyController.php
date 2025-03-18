@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Data\CreatCompanyData;
 use App\Helpers\ApiResponse;
 use App\Http\Requests\CreatCompanyFormRequest;
+use App\Http\Requests\UpdateCompanyFormRequest;
 use App\Services\CompanyServices;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -60,8 +61,7 @@ class CompanyController extends Controller
         return ApiResponse::success($createdCompany,$mensaje,200);
     }
     // TODO:probar el UNIQUE form Request (crear y editar) correo y telefono
-    // TODO:probar
-    public function updateCompany(Request $request, $id):JsonResponse{
+    public function updateCompany(UpdateCompanyFormRequest $request, $id):JsonResponse{
         $data=[
             "id" => $request->id,
             "name" => $request->name,
@@ -83,5 +83,22 @@ class CompanyController extends Controller
         $mensaje="The company was updated successfully";
         return ApiResponse::success($updatedCompany,$mensaje,200);
 
+    }
+
+
+    public function deleteCompany(Request $request):JsonResponse{
+
+
+        $record=$this->companyServices->consultRecordForId($request->id);
+
+        if(!$record){
+            $mensaje="The company was found on the database";
+            return ApiResponse::error($mensaje,404);
+        }
+
+        $this->companyServices->deleteCompany($record);
+
+        $mensaje="The company was deleted successfully";
+        return ApiResponse::success(null,$mensaje,200);
     }
 }

@@ -22,9 +22,8 @@ Route::prefix("v1")->group(function(){
     Route::prefix("company")->group(function(){
         Route::get("/",                [CompanyController::class,"consultAllCompanies"])->middleware("auth:sanctum")->name("api.company.all");
         Route::post("/",               [CompanyController::class,"creatCompany"])->name("api.company.create");
-        // TODO: probrar endpoint
-        Route::put("/{id}",               [CompanyController::class,"updateCompany"])->name("api.company.update");
-        // Route::delete("/{id}",               [CompanyController::class,"consultCompanyForId"])->name("api.company.create");
+        Route::put("/{id}",            [CompanyController::class,"updateCompany"])->name("api.company.update");
+        Route::delete("/{id}",         [CompanyController::class,"deleteCompany"])->name("api.company.delete");
         Route::get("/{id}",            [CompanyController::class,"consultCompanyForId"])->name("api.company.id");
     });
 

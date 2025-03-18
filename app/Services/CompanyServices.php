@@ -29,6 +29,10 @@ class CompanyServices {
         return $this->companyRepository->actualizar($data);
     }
 
+    public function deleteCompany(Model $record): void{
+        $this->companyRepository->eliminar($record->id);
+    }
+
 
 
 
