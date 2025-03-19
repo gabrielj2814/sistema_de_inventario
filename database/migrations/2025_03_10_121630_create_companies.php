@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Company;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,6 +18,11 @@ return new class extends Migration
             $table->string("email",255)->unique();
             $table->string("phone",15)->unique();
             $table->string("address",255);
+            $table->enum("status",[
+                Company::STATUS_PENDIENTE,
+                Company::STATUS_APROBADO,
+                Company::STATUS_RECHAZADO,
+            ])->default(Company::STATUS_PENDIENTE);
             $table->timestamps();
             $table->softDeletes();
 
@@ -28,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('company');
+        Schema::dropIfExists('companies');
     }
 };
