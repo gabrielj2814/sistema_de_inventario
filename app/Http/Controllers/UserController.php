@@ -17,11 +17,22 @@ class UserController extends Controller
 
     public function consultAll(Request $request):JsonResponse{
 
-        // $users
+        $users=$this->userServices->consultAll();
 
-
-
-
-        return ApiResponse::success(null,"ok",200);
+        return ApiResponse::success($users,"ok",200);
     }
+
+    public function consultUserForId(Request $request):JsonResponse{
+
+        $user=$this->userServices->consultUserForId($request->id);
+
+        if(!$user){
+            $mensaje="The user was not found";
+            return ApiResponse::error($mensaje,404);
+        }
+
+
+        return ApiResponse::success($user,"ok",200);
+    }
+
 }

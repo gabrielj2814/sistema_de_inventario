@@ -24,9 +24,9 @@ Route::prefix("v1")->group(function(){
     Route::prefix("admin")->group(function(){
 
         Route::prefix("user")->group(function(){
-            Route::get("/", [UserController::class,"consultAll"])->name("api.user.all");
+            Route::get("/", [UserController::class,"consultAll"])->name("api.admin.user.all");
+            Route::get("/{id}", [UserController::class,"consultUserForId"])->name("api.admin.user.id");
             // Route::post("/", [])->name("api.user.create");
-            // Route::get("/{id}", [])->name("api.user.id");
             // Route::put("/{id}", [])->name("api.user.update");
             // Route::delete("/{id}", [])->name("api.user.id.delete");
         });
