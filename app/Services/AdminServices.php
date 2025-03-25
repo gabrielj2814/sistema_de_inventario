@@ -1,4 +1,5 @@
 <?php
+// AdminServices
 
 namespace App\Services;
 
@@ -7,7 +8,7 @@ use App\Repository\UserRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
-class UserServices implements User{
+class AdminServices implements User {
 
 
     public function __construct(
@@ -22,14 +23,13 @@ class UserServices implements User{
         return $this->userRepository->consultarPorId($id);
     }
 
-    // public function edit($id): Model{
-    //     return $this->userRepository->consultarPorId($id);
-    // }
+    public function edit($data): Model{
+        return $this->userRepository->actualizar($data);
+    }
 
-    // public function delete($id): void{
-    //     $this->userRepository->consultarPorId($id);
-    // }
-
+    public function delete($id): void{
+        $this->userRepository->eliminar($id);
+    }
 
     public function create($data): Model{
         return $this->userRepository->registrar($data);
@@ -37,7 +37,6 @@ class UserServices implements User{
 
 
 }
-
 
 
 ?>

@@ -5,7 +5,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,10 +24,10 @@ Route::prefix("v1")->group(function(){
     Route::prefix("admin")->group(function(){
 
         Route::prefix("user")->group(function(){
-            Route::get("/", [UserController::class,"consultAll"])->name("api.admin.user.all");
-            Route::get("/{id}", [UserController::class,"consultUserForId"])->name("api.admin.user.id");
-            // Route::post("/", [])->name("api.user.create");
-            // Route::put("/{id}", [])->name("api.user.update");
+            Route::get("/",      [AdminController::class,"consultAll"])->middleware("auth:sanctum")->name("api.admin.all");
+            Route::get("/{id}",  [AdminController::class,"consultUserForId"])->middleware("auth:sanctum")->name("api.admin.id");
+            Route::post("/",     [AdminController::class,"createdUser"])->middleware("auth:sanctum")->name("api.admin.create");
+            Route::put("/{id}",  [AdminController::class,"updatedUser"])->name("api.admin.update");
             // Route::delete("/{id}", [])->name("api.user.id.delete");
         });
 

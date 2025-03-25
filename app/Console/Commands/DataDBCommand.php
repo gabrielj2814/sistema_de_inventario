@@ -27,6 +27,9 @@ class DataDBCommand extends Command
     public function handle()
     {
         //
+        $this->info("Registrando Roles");
+        Artisan::call("db:seed --class=RolesSeeder");
+
         $this->info("Registrando Usuario Root");
         Artisan::call("db:seed --class=UserRootSeeder");
 

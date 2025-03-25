@@ -25,13 +25,13 @@ class UserRootSeeder extends Seeder
             $datos=[
                 "id" => "",
                 "name" => "root",
+                "last_name" => "uwu",
                 "email" => "root@gmail.com",
                 "password" => env("DEBUG_PASSWORD_ADMIN")
             ];
 
             $rootDB=$this->userRepository->registrar($datos);
-            $datos["id"]=$rootDB->id;
-            $this->userRepository->actualizarClave($datos);
+            $rootDB->assignRole("Web-Master");
         }
 
     }

@@ -13,7 +13,11 @@ class UserRepository implements RepositoryWithSoftDelete {
     function registrar(array $datos): Model{
         $usuario= new User();
         $usuario->name=$datos["name"];
+        $usuario->last_name=$datos["last_name"];
         $usuario->email=$datos["email"];
+        if(array_key_exists("password",$datos)){
+            $usuario->password=$datos["password"];
+        }
         $usuario->save();
         return $usuario;
     }
@@ -22,7 +26,7 @@ class UserRepository implements RepositoryWithSoftDelete {
     {
         $usuario= $this->consultarPorId($datos["id"]);
         $usuario->name=$datos["name"];
-        $usuario->email=$datos["email"];
+        $usuario->last_name=$datos["last_name"];
         $usuario->save();
         return $usuario;
     }
