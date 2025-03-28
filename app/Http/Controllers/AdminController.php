@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Contracts\Admin;
 use App\Contracts\User;
+use App\Events\CreatedAdminUserEvent;
 use App\Helpers\ApiResponse;
 use App\Http\Requests\CreateAdminFormRequest;
 use App\Http\Requests\UpdateAdminFormRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -38,14 +40,30 @@ class AdminController extends Controller
     }
 
     public function createdUser(CreateAdminFormRequest $request):JsonResponse{
+        $generatedPassword=Str::password(
+            length: 15,          // Longitud (por defecto: 32)
+            letters: true,       // Incluir letras (true por defecto)
+            numbers: true,       // Incluir números (true por defecto)
+            symbols: true,       // Incluir símbolos (true por defecto)
+            spaces: false        // Incluir espacios (false por defecto)
+        );
 
         $data=[
             "name"       => $request->admin->name,
             "last_name"  => $request->admin->last_name,
             "email"      => $request->admin->email,
+            "password"   => $generatedPassword,
         ];
 
+
         $createdUser=$this->user->create($data);
+
+        $dataEven=[
+            "user"              => $createdUser,
+            "passwordTextPlain" => $generatedPassword,
+        ];
+
+        CreatedAdminUserEvent::dispatch($dataEven);
 
         return ApiResponse::success($createdUser,"User was created successfully",200);
     }
@@ -66,6 +84,26 @@ class AdminController extends Controller
         $updatedUser=$this->user->edit($data);
 
         return ApiResponse::success($updatedUser,"User was updated successfully",200);
+    }
+
+    public function deleteUser(Request $request,$id):JsonResponse{
+
+        $adminUser=$this->user->consultForId($id);
+        if(!$adminUser){
+            $mensaje="The user was not found";
+            return ApiResponse::error($mensaje,404);
+        }
+
+        $this->user->delete($id);
+        $verificateExistAdminUser=$this->user->consultForId($id);
+
+        if($verificateExistAdminUser){
+            $mensaje="The user admin not was deleted";
+            return ApiResponse::error($mensaje,400);
+        }
+
+
+        return ApiResponse::success(null,"User was updated successfully",200);
     }
 
 

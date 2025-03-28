@@ -24,11 +24,11 @@ Route::prefix("v1")->group(function(){
     Route::prefix("admin")->group(function(){
 
         Route::prefix("user")->group(function(){
-            Route::get("/",      [AdminController::class,"consultAll"])->middleware("auth:sanctum")->name("api.admin.all");
-            Route::get("/{id}",  [AdminController::class,"consultUserForId"])->middleware("auth:sanctum")->name("api.admin.id");
-            Route::post("/",     [AdminController::class,"createdUser"])->middleware("auth:sanctum")->name("api.admin.create");
-            Route::put("/{id}",  [AdminController::class,"updatedUser"])->name("api.admin.update");
-            // Route::delete("/{id}", [])->name("api.user.id.delete");
+            Route::get("/",        [AdminController::class,"consultAll"])->middleware("auth:sanctum")->name("api.admin.all");
+            Route::get("/{id}",    [AdminController::class,"consultUserForId"])->middleware("auth:sanctum")->name("api.admin.id");
+            Route::post("/",       [AdminController::class,"createdUser"])->middleware("auth:sanctum")->name("api.admin.create");
+            Route::put("/{id}",    [AdminController::class,"updatedUser"])->middleware("auth:sanctum")->name("api.admin.update");
+            Route::delete("/{id}", [AdminController::class,"deleteUser"])->middleware("auth:sanctum")->name("api.admin.delete");
         });
 
         Route::prefix("company")->group(function(){

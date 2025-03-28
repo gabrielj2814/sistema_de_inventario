@@ -16,7 +16,7 @@ class UserRepository implements RepositoryWithSoftDelete {
         $usuario->last_name=$datos["last_name"];
         $usuario->email=$datos["email"];
         if(array_key_exists("password",$datos)){
-            $usuario->password=$datos["password"];
+            $usuario->password=Hash::make($datos["password"]);
         }
         $usuario->save();
         return $usuario;

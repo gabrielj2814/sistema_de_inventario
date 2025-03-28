@@ -32,7 +32,9 @@ class AdminServices implements User {
     }
 
     public function create($data): Model{
-        return $this->userRepository->registrar($data);
+        $user=$this->userRepository->registrar($data);
+        $user->assignToRole("Team-Admin-Member");
+        return $user;
     }
 
 
