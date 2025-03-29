@@ -16,9 +16,15 @@ class SendPasswordToAdminUserMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+
+    public $user;
+    public $passwordTextPlain;
+
+    public function __construct($user,$passwordTextPlain)
     {
         //
+        $this->user= $user;
+        $this->passwordTextPlain= $passwordTextPlain;
     }
 
     /**
@@ -37,7 +43,11 @@ class SendPasswordToAdminUserMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'mails.general.send_password_to_admin_user_mail',
+            with: [
+                'user' => $this->user,
+                'passwordTextPlain' => $this->passwordTextPlain,
+            ],
         );
     }
 

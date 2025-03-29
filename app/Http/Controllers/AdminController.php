@@ -10,6 +10,7 @@ use App\Http\Requests\CreateAdminFormRequest;
 use App\Http\Requests\UpdateAdminFormRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class AdminController extends Controller
@@ -40,32 +41,46 @@ class AdminController extends Controller
     }
 
     public function createdUser(CreateAdminFormRequest $request):JsonResponse{
-        $generatedPassword=Str::password(
-            length: 15,          // Longitud (por defecto: 32)
-            letters: true,       // Incluir letras (true por defecto)
-            numbers: true,       // Incluir números (true por defecto)
-            symbols: true,       // Incluir símbolos (true por defecto)
-            spaces: false        // Incluir espacios (false por defecto)
-        );
+        DB::beginTransaction();
+        try {
+            //code...
+            $generatedPassword=Str::password(
+                length: 15,          // Longitud (por defecto: 32)
+                letters: true,       // Incluir letras (true por defecto)
+                numbers: true,       // Incluir números (true por defecto)
+                symbols: true,       // Incluir símbolos (true por defecto)
+                spaces: false        // Incluir espacios (false por defecto)
+            );
 
-        $data=[
-            "name"       => $request->admin->name,
-            "last_name"  => $request->admin->last_name,
-            "email"      => $request->admin->email,
-            "password"   => $generatedPassword,
-        ];
+            $data=[
+                "name"       => $request->admin->name,
+                "last_name"  => $request->admin->last_name,
+                "email"      => $request->admin->email,
+                "password"   => $generatedPassword,
+            ];
 
 
-        $createdUser=$this->user->create($data);
+            $createdUser=$this->user->create($data);
 
-        $dataEven=[
-            "user"              => $createdUser,
-            "passwordTextPlain" => $generatedPassword,
-        ];
+            $dataEven=[
+                "user"              => $createdUser,
+                "passwordTextPlain" => $generatedPassword,
+            ];
 
-        CreatedAdminUserEvent::dispatch($dataEven);
+            CreatedAdminUserEvent::dispatch($dataEven);
 
-        return ApiResponse::success($createdUser,"User was created successfully",200);
+            DB::commit();
+
+            return ApiResponse::success($createdUser,"User was created successfully",200);
+        } catch (\Throwable $th) {
+            //throw $th;
+
+            DB::rollBack();
+            return ApiResponse::error("Error creating admin user",500);
+        }
+
+
+
     }
 
     public function updatedUser(UpdateAdminFormRequest $request, $id):JsonResponse{
