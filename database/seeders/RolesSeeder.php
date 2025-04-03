@@ -23,13 +23,14 @@ class RolesSeeder extends Seeder
 
         $roles=[
             "Web-Master",
-            "Super-Admin",
-            "Team-Admin-Member",
+            "Web-Super-Admin",
+            "Web-Team-default-Member",
             //
-            "Administrator",
+            // "Administrator",
             "Customer",
             "Customer-Premium",
             "Employee",
+            "Employee-administrador",
         ];
 
         foreach($roles as $role){

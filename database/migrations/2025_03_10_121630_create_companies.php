@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string("name",255);
             $table->string("email",255)->unique();
             $table->string("phone",15)->unique();
-            $table->string("address",255);
+            $table->string("address",255)->nullable();
             $table->enum("status",[
                 Company::STATUS_PENDIENTE,
                 Company::STATUS_APROBADO,

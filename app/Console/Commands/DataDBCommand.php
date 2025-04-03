@@ -33,8 +33,8 @@ class DataDBCommand extends Command
         $this->info("Registrando Usuario Root");
         Artisan::call("db:seed --class=UserRootSeeder");
 
-        $this->info("Registrando Companies");
-        Artisan::call("db:seed --class=CompanySeeder");
+        // $this->info("Registrando Companies");
+        // Artisan::call("db:seed --class=CompanySeeder");
 
         return Command::SUCCESS;
     }
