@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Data\CreateCustomerData;
 use App\Helpers\ApiResponse;
-use CreateCustomerData;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -35,8 +35,9 @@ class CreateCustomerFormRequest extends FormRequest
             "email"                =>    "required|string|unique:App\Models\User,email|max:255|email:rfc,dns",
             "password"             =>    "required|string|min:8|max:255",
             "name_company"         =>    "required|string|unique:App\Models\Company,name|max:255",
-            "phone_company"        =>    "required|string|unique:App\Models\Company,phone|min:15|max:15",
+            "phone_company"        =>    "required|string|unique:App\Models\Company,phone|min:11|max:15",
             "email_company"        =>    "required|string|unique:App\Models\Company,email|max:255|email:rfc,dns",
+            "address_company"         => "required|string|min:3|max:255",
         ];
     }
 
@@ -64,12 +65,16 @@ class CreateCustomerFormRequest extends FormRequest
             "phone_company.required"    => "the field is required",
             "phone_company.string"      => "the field is type string",
             "phone_company.max"         => "the max characters of field is 15 characters",
-            "phone_company.min"         => "the min characters of field is 15 characters",
+            "phone_company.min"         => "the min characters of field is 11 characters",
             "phone_company.unique"      => "the name company is in use",
             "email_company.required"    => "the field is required",
             "email_company.string"      => "the field is type string",
             "email_company.max"         => "the max characters of field is 255 characters",
             "email_company.email"       => "the format of email is invalid",
+            "address_company.required"  => "the field is required",
+            "address_company.string"    => "the field is type string",
+            "address_company.max"       => "the max characters of field is 255 characters",
+            "address_company.min"       => "the min characters of field is 3 characters",
         ];
     }
 
@@ -90,6 +95,7 @@ class CreateCustomerFormRequest extends FormRequest
             "name_company"        =>    $this->name_company,
             "phone_company"       =>    $this->phone_company,
             "email_company"       =>    $this->email_company,
+            "address_company"       =>    $this->address_company,
         ]);
     }
 }

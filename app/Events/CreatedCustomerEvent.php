@@ -14,12 +14,17 @@ class CreatedCustomerEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $user;
+    public $companyData;
+
     /**
      * Create a new event instance.
      */
-    public function __construct()
+    public function __construct($dataEvent)
     {
         //
+        $this->user = $dataEvent['user'];
+        $this->companyData = $dataEvent['companyData'];
     }
 
     /**

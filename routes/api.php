@@ -41,7 +41,7 @@ Route::prefix("v1")->group(function(){
     });
 
     Route::prefix("register")->group(function(){
-        // se creara el usuario pero antes de responder se ejecutara un evento que creara la empresa y se le asignara de una vez
+        // se creara el usuario pero antes de responder se ejecutara un evento que creara la empresa y se le assignara de una vez
         Route::post("/my-account",                  [CustomerController::class,"register"])->name("api.public.user.create");
     });
 

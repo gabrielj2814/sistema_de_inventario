@@ -5,6 +5,7 @@ namespace App\Repository;
 
 use App\Contracts\RepositoryWithSoftDelete;
 use App\Models\Company;
+use App\Models\CustomerHasCompany;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -70,6 +71,17 @@ class CompanyRepository implements RepositoryWithSoftDelete {
 
     function consultCompanyForEmail($email): Model | null {
         return Company::where("email","=",$email)->first();
+    }
+
+    function assignCompany($user_id,$company_id): Model | null {
+        $company= $this->consultarPorId($company_id);
+
+        $assigCustomerCompany=new CustomerHasCompany();
+        $assigCustomerCompany->user_id=$user_id;
+        $assigCustomerCompany->companies_id=$company->id;
+        $assigCustomerCompany->save();
+
+        return $assigCustomerCompany;
     }
 
 }

@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Data;
+
 use Spatie\LaravelData\Data;
 
 class CreateCustomerData extends Data{
@@ -11,6 +13,7 @@ class CreateCustomerData extends Data{
         public string $name_company,
         public string $phone_company,
         public string $email_company,
+        public string $address_company,
     ) {
     }
 

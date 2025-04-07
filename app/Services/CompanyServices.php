@@ -25,6 +25,10 @@ class CompanyServices {
         return $this->companyRepository->registrar($data);
     }
 
+    public function assignCompany($user_id,$company_id): Model | null{
+        return $this->companyRepository->assignCompany($user_id,$company_id);
+    }
+
     public function updateCompany($data): Model{
         return $this->companyRepository->actualizar($data);
     }
