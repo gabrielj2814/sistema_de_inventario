@@ -11,6 +11,7 @@ use App\Http\Requests\UpdateAdminFormRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class AdminController extends Controller
@@ -74,7 +75,11 @@ class AdminController extends Controller
             return ApiResponse::success($createdUser,"User was created successfully",200);
         } catch (\Throwable $th) {
             //throw $th;
-
+            Log::error("Error creating admin user",[
+                "error"     => $th->getMessage(),
+                "line"      => $th->getLine(),
+                "file"      => $th->getFile(),
+            ]);
             DB::rollBack();
             return ApiResponse::error("Error creating admin user",500);
         }
