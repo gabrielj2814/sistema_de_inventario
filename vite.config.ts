@@ -1,18 +1,21 @@
 import vue from '@vitejs/plugin-vue';
 import laravel from 'laravel-vite-plugin';
 import path from 'path';
-import tailwindcss from "@tailwindcss/vite";
+// import tailwindcss from "@tailwindcss/vite";
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
-
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/js/app.ts'],
+            input: [
+                'resources/js/app.ts',
+                'resources/sass/app.scss',
+                // 'resources/js/app.js',
+            ],
             ssr: 'resources/js/ssr.ts',
             refresh: true,
         }),
-        tailwindcss(),
+        // tailwindcss(),
         vue({
             template: {
                 transformAssetUrls: {

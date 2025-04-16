@@ -1,36 +1,24 @@
 <script setup lang="ts">
-import AppLayout from '@/layouts/AppLayout.vue';
-import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/vue3';
-import PlaceholderPattern from '../components/PlaceholderPattern.vue';
+import NavbarDashboard from '@/components/NavbarDashboard.vue';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Dashboard',
-        href: '/dashboard',
-    },
-];
 </script>
 
-<template>
-    <Head title="Dashboard" />
+<style scoped>
 
-    <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-            <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-                <div class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                    <PlaceholderPattern />
-                </div>
-                <div class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                    <PlaceholderPattern />
-                </div>
-                <div class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                    <PlaceholderPattern />
-                </div>
-            </div>
-            <div class="relative min-h-[100vh] flex-1 rounded-xl border border-sidebar-border/70 dark:border-sidebar-border md:min-h-min">
-                <PlaceholderPattern />
-            </div>
+    .contenedor-main {
+        background-color: #f8f9fa;
+        height: 100vh;
+        padding-top: 60px;
+    }
+</style>
+
+<template>
+    <!-- <div>hola</div> -->
+    <main class="contenedor-main">
+        <NavbarDashboard />
+        <div class="section-content">
+            <slot name="SectionContent"></slot>
         </div>
-    </AppLayout>
+    </main>
+
 </template>
