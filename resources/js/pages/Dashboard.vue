@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import NavbarDashboard from '@/components/NavbarDashboard.vue';
 
+const props= defineProps([
+    "user"
+])
+
+console.log("user => ",props.user)
+
 </script>
 
 <style scoped>
@@ -17,7 +23,9 @@ import NavbarDashboard from '@/components/NavbarDashboard.vue';
     <main class="contenedor-main">
         <NavbarDashboard />
         <div class="section-content">
-            <slot name="SectionContent"></slot>
+            <slot name="SectionContent">
+                uwu
+            </slot>
         </div>
     </main>
 
