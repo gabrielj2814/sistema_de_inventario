@@ -31,7 +31,7 @@ console.log(props.rutas)
                         <div class="row justify-content-center">
                             <div class="col-auto text-center">
                                 <img class=" d-block mb-4" :src="props.app_url+'/storage/monita_china_en_contruccion.jpg'" alt="en contrucción">
-                                <h2 class="">En contrucción Papus</h2>
+                                <h2 class="">En contrucción Papu, regrese mas tarde</h2>
                             </div>
                         </div>
                     </div>
