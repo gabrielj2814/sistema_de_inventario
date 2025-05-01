@@ -27,7 +27,6 @@ defineProps({
                     </div>
                 </div>
             </div>
-
         </template>
     </Dashboard>
 

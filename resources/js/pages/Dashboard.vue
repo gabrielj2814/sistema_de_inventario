@@ -2,10 +2,12 @@
 import NavbarDashboard from '@/components/NavbarDashboard.vue';
 
 const props= defineProps([
-    "user"
+    "rutas",
+    "app_url",
 ])
 
-console.log("user => ",props.user)
+localStorage.setItem("app_url",props.app_url)
+console.log(props.rutas)
 
 </script>
 
@@ -21,10 +23,19 @@ console.log("user => ",props.user)
 <template>
     <!-- <div>hola</div> -->
     <main class="contenedor-main">
-        <NavbarDashboard />
+        <NavbarDashboard :rutas="props.rutas" />
         <div class="section-content">
             <slot name="SectionContent">
-                uwu
+                <div>
+                    <div class=" container-fluid">
+                        <div class="row justify-content-center">
+                            <div class="col-auto text-center">
+                                <img class=" d-block mb-4" :src="props.app_url+'/storage/monita_china_en_contruccion.jpg'" alt="en contrucción">
+                                <h2 class="">En contrucción Papus</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </slot>
         </div>
     </main>

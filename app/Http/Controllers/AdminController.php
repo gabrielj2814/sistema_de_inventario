@@ -12,11 +12,24 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class AdminController extends Controller
 {
     //
+
+
+    public function viewIndex(Request $request){
+        $rutas=Route::getRoutes()->getRoutesByName();
+        $app_url=env("APP_URL");
+
+        return Inertia::render("modules/personal_admin/PersonalAdminIndex",[
+            "rutas" => $rutas,
+            "app_url" => $app_url
+        ]);
+    }
 
     public function __construct(
         protected User $user

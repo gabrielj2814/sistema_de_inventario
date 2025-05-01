@@ -1,18 +1,17 @@
 <script setup lang="js">
 import axios from 'axios';
 
+const props= defineProps([
+    "rutas",
+])
+
 function logout(){
 
-    let option={
-        headers:{
-            "Authorization": `Bearer ${localStorage.getItem("_tokenApp")}`
-        },
-    }
-    axios.get("/auth/logout",option)
+    axios.get(`/${props.rutas["web.logout"].uri}`)
     .then(res => {
         console.log("data res =>",res)
         if(res.status==200){
-            location.href="/auth"
+            location.href=`/${props.rutas["view.auth.login.admin"].uri}`
         }
     })
     .catch(error => {
@@ -45,31 +44,50 @@ function logout(){
                             <button class="btn btn-success" type="submit">Search</button>
                         </form> -->
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Perfil</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Configuración</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Dropdown
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-dark">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" :href="'/'+props.rutas['dashboard'].uri">Dashboard</a>
+                            </li>
+                            <!-- <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">Usuarios</a>
+                            </li> -->
+                            <!-- <li class="nav-item">
+                                <a class="nav-link" href="#">Link</a>
+                            </li> -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Usuarios
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark">
+                                    <li><a class="dropdown-item" :href="'/'+props.rutas['view.personal.admin.index'].uri" >Personal</a></li>
+                                    <li><a class="dropdown-item" href="#">Clientes</a></li>
+                                    <li><a class="dropdown-item" href="#">Solicitudes</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Configuración
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark">
+                                    <li><a class="dropdown-item" href="#">Roles</a></li>
+                                    <!-- <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="#">Something else here</a></li> -->
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Dropdown
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark">
+                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                </ul>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="#" @click="logout">Salir</a>
                             </li>
