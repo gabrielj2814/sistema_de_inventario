@@ -1,5 +1,3 @@
-TODO: lista emprasa
-TODO: consultar emprasa por id
 TODO: dar de alta la empresa
 TODO: dar de baja la empresa con motivo incluivo
 

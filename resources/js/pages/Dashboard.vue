@@ -24,7 +24,7 @@ console.log(props.rutas)
     <!-- <div>hola</div> -->
     <main class="contenedor-main">
         <NavbarDashboard :rutas="props.rutas" />
-        <div class="section-content">
+        <div class="section-content p-4">
             <slot name="SectionContent">
                 <div>
                     <div class=" container-fluid">

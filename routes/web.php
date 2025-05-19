@@ -67,9 +67,9 @@ Route::prefix("app")->middleware("auth")->group(function(){
 });
 
 Route::prefix("auth")->group(function(){
-    Route::get("/login", [LoginController::class,"view"])->name("view.auth.login.admin");
-    Route::post("/login",              [LoginController::class,"login"])->name("web.auth.login");
-    Route::get("/login/company/{company_id}",[LoginController::class,"viewLoginCompany"])->name("web.auth.login.company");
+    Route::get("/login",                         [LoginController::class,"view"])->name("view.auth.login.admin");
+    Route::post("/login",                        [LoginController::class,"login"])->name("web.auth.login");
+    Route::get("/login/company/{company_id}",    [LoginController::class,"viewLoginCompany"])->name("web.auth.login.company");
 });
 
 
