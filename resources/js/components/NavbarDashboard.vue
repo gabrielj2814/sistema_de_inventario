@@ -1,17 +1,21 @@
 <script setup lang="js">
 import axios from 'axios';
+import { inject } from 'vue';
 
-const props= defineProps([
-    "rutas",
-])
+// const props= defineProps([
+//     "rutas",
+// ])
+
+const rutas= inject("rutas")
+
 
 function logout(){
 
-    axios.get(`/${props.rutas["web.logout"].uri}`)
+    axios.get(`/${rutas["web.logout"].uri}`)
     .then(res => {
         console.log("data res =>",res)
         if(res.status==200){
-            location.href=`/${props.rutas["view.auth.login.admin"].uri}`
+            location.href=`/${rutas["view.auth.login.admin"].uri}`
         }
     })
     .catch(error => {
@@ -20,9 +24,6 @@ function logout(){
 
 
 }
-
-
-
 </script>
 
 
@@ -45,7 +46,7 @@ function logout(){
                         </form> -->
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" :href="'/'+props.rutas['dashboard'].uri">Dashboard</a>
+                                <a class="nav-link active" aria-current="page" :href="'/'+rutas['dashboard'].uri">Home</a>
                             </li>
                             <!-- <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="#">Usuarios</a>
@@ -58,7 +59,7 @@ function logout(){
                                     Usuarios
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark">
-                                    <li><a class="dropdown-item" :href="'/'+props.rutas['view.personal.admin.index'].uri" >Personal</a></li>
+                                    <li><a class="dropdown-item" :href="'/'+rutas['view.personal.admin.index'].uri" >Personal</a></li>
                                     <li><a class="dropdown-item" href="#">Clientes</a></li>
                                     <li><a class="dropdown-item" href="#">Solicitudes</a></li>
                                 </ul>

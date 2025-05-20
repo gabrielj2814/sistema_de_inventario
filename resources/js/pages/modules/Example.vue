@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Dashboard from '../Dashboard.vue';
+import LayoutDashboard from '@/layouts/settings/LayoutDashboard.vue';
 
 defineProps({
     // Define any props you want to pass to the component
@@ -17,7 +17,7 @@ defineProps({
 <template>
 
 
-    <Dashboard >
+    <LayoutDashboard >
         <template #SectionContent>
             <div class=" container-fluid ">
                 <div class="row justify-content-center">
@@ -28,6 +28,6 @@ defineProps({
                 </div>
             </div>
         </template>
-    </Dashboard>
+    </LayoutDashboard>
 
 </template>

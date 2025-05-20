@@ -26,7 +26,7 @@ Route::prefix("app")->middleware("auth")->group(function(){
         $user=Auth::user();
         $app_url=env("APP_URL");
         $rutas=Route::getRoutes()->getRoutesByName();
-        return Inertia::render("Dashboard",[
+        return Inertia::render("Home",[
             "rutas" => $rutas,
             "app_url" => $app_url
         ]);
