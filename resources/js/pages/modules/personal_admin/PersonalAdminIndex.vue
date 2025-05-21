@@ -2,6 +2,7 @@
 // components
 import Modal from '@/components/Modal.vue';
 import Table from '@/components/Table.vue';
+import TarjetaVistaMovil from '@/components/TarjetaVistaMovil.vue';
 import LayoutDashboard from '@/layouts/settings/LayoutDashboard.vue';
 // imports
 import { provide, reactive } from 'vue';
@@ -21,17 +22,15 @@ const camposFormulario = new reactive({
     email: '',
 });
 
-const rutas=new reactive(props.rutas)
-const app_url=new reactive(props.app_url)
+const rutas = new reactive(props.rutas);
+const app_url = new reactive(props.app_url);
 
-provide("rutas",rutas)
-provide("app_url",app_url)
-
+provide('rutas', rutas);
+provide('app_url', app_url);
 
 const state = new reactive({
     modoFormularioModal: false,
 });
-
 
 const modoModal = (id) => {
     console.log('id => ', id);
@@ -47,6 +46,7 @@ const cargarData = () => {
     console.log('data formulario => ', camposFormulario);
 };
 
+let lista = [1, 2, 3, 4, 5];
 </script>
 
 <style></style>
@@ -55,7 +55,7 @@ const cargarData = () => {
     <LayoutDashboard>
         <template #SectionContent>
             <!-- modulo de personal administrativo -->
-            <div class="rounded-2 p-3 shadow">
+            <div class="rounded-2 p-3 pb-5 shadow">
                 <div class="row justify-content-between">
                     <div class="col-md-auto col-12">
                         <h1>Modulo de Personal Administrativo</h1>
@@ -81,10 +81,17 @@ const cargarData = () => {
                                 />
                             </svg>
                         </button>
-                        <button class="btn btn-primary d-block d-lg-none mb-2 w-100">Nuevo Registro</button>
+                        <button
+                            class="btn btn-primary d-block d-lg-none mb-2 w-100"
+                            data-bs-toggle="modal"
+                            :data-bs-target="'#' + idModalFormulario"
+                            @click="modoModal(null)"
+                        >
+                            Nuevo Registro
+                        </button>
                     </div>
                 </div>
-                <div class="border"></div>
+                <div class="mb-2 border"></div>
                 <!-- tabla -->
                 <!-- mostar datos en desktop -->
                 <Table class-table="table-dark caption-top" class-contenedor-tabla="d-none d-lg-block">
@@ -96,7 +103,7 @@ const cargarData = () => {
                         </tr>
                     </template>
                     <template #body>
-                        <tr>
+                        <tr v-for="item in lista" :key="item">
                             <td>test</td>
                             <td>test@gmail.com</td>
                             <td>
@@ -112,17 +119,17 @@ const cargarData = () => {
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 width="24"
                                                 height="24"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="2"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                class="icon icon-tabler icons-tabler-outline icon-tabler-pencil"
+                                                fill="currentColor"
+                                                class="bi bi-pencil-square"
+                                                viewBox="0 0 16 16"
                                             >
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
-                                                <path d="M13.5 6.5l4 4" />
+                                                <path
+                                                    d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                                                />
+                                                <path
+                                                    fill-rule="evenodd"
+                                                    d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+                                                />
                                             </svg>
                                         </button>
                                     </div>
@@ -175,7 +182,92 @@ const cargarData = () => {
                     </template>
                     <template #caption> Rigistro del modulo Personal </template>
                 </Table>
+                <div class="row d-flex d-lg-none">
+                    <div class="col-12">
+                        <h3>Registros</h3>
+                    </div>
+                    <div class="col-12 mb-2" v-for="item in lista" :key="item">
+                        <TarjetaVistaMovil>
+                            <template #body>
+                                <div class="card-text">Nombre: roote</div>
+                                <div class="card-text">Apellido: roote</div>
+                                <div class="card-text mb-2">Email: roote@gmail.com</div>
+                                <div class="row justify-content-between">
+                                    <div class="col-auto">
+                                        <button
+                                            class="btn btn-warning"
+                                            @click="modoModal(1)"
+                                            data-bs-toggle="modal"
+                                            :data-bs-target="'#' + idModalFormulario"
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                fill="currentColor"
+                                                class="bi bi-pencil-square d-inline-block"
+                                                viewBox="0 0 16 16"
+                                            >
+                                                <path
+                                                    d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                                                />
+                                                <path
+                                                    fill-rule="evenodd"
+                                                    d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+                                                />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button class="btn btn-info">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-eye"
+                                            >
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                                                <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button class="btn btn-danger">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-trash"
+                                            >
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M4 7l16 0" />
+                                                <path d="M10 11l0 6" />
+                                                <path d="M14 11l0 6" />
+                                                <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                                <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </template>
+                        </TarjetaVistaMovil>
+                    </div>
+                </div>
                 <!-- mostrar datos en movil -->
+
                 <!-- modal -->
             </div>
             <Modal :id-modal="idModalFormulario" clases="modal-lg">
@@ -228,7 +320,7 @@ const cargarData = () => {
                 <template #footer>
                     <button v-if="state.modoFormularioModal" type="button" class="btn btn-primary" @click="cargarData">Registrar</button>
                     <button v-else class="btn btn-warning" @click="cargarData">Actualizar</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
                 </template>
             </Modal>
         </template>
