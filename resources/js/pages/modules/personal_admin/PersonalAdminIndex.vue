@@ -5,13 +5,11 @@ import Table from '@/components/Table.vue';
 import TarjetaVistaMovil from '@/components/TarjetaVistaMovil.vue';
 import LayoutDashboard from '@/layouts/settings/LayoutDashboard.vue';
 // imports
-import { provide, reactive } from 'vue';
+import { provide, reactive, ref } from 'vue';
 
 document.title = 'Modulo | Personal';
 
 const props = defineProps(['rutas', 'app_url']);
-
-// localStorage.setItem('app_url', props.app_url);
 
 const idModalFormulario = 'modaFormularioPersonal';
 
@@ -47,6 +45,26 @@ const cargarData = () => {
 };
 
 let lista = [1, 2, 3, 4, 5];
+
+// const toastElement = ref(null);
+// let toast = null;
+
+// onMounted(() => {
+//     if (toastElement.value) {
+//         toast = new Toast(toastElement.value, {
+//           autohide: true,
+//           delay: 5000
+//         }
+//     )
+//     }
+// })
+
+// const showToast = () => {
+//     console.log(toast)
+//     if (toast) {
+//         toast.show()
+//     }
+// }
 </script>
 
 <style></style>
@@ -99,7 +117,7 @@ let lista = [1, 2, 3, 4, 5];
                         <tr>
                             <th>Full Name</th>
                             <th>Email</th>
-                            <th>Acciones</th>
+                            <th class=" text-end">Acciones</th>
                         </tr>
                     </template>
                     <template #body>
@@ -323,6 +341,47 @@ let lista = [1, 2, 3, 4, 5];
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
                 </template>
             </Modal>
+            <!--
+            <button type="button" class="btn btn-primary" id="liveToastBtn" @click="showToast">Show live toast</button>
+
+                <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                <div i  d="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" ref="toastElement">
+                    <div class="toast-header">
+                    <img src="" class="rounded me-2" alt="">
+                    <strong class="me-auto">Bootstrap</strong>
+                    <small>11 mins ago</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                    Hello, world! This is a toast message.
+                    </div>
+                </div>
+            </div>
+            -->
+            <!-- notificaciones desktop -->
+            <!-- <div aria-live="polite" aria-atomic="true" class="position-relative">
+                <div class="toast-container end-0 top-0 p-3">
+                    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header">
+                            <img src class="me-2 rounded" alt />
+                            <strong class="me-auto">Bootstrap</strong>
+                            <small class="text-body-secondary">just now</small>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">See? Just like this.</div>
+                    </div>
+
+                    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header">
+                            <img src class="me-2 rounded" alt />
+                            <strong class="me-auto">Bootstrap</strong>
+                            <small class="text-body-secondary">2 seconds ago</small>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">Heads up, toasts will stack automatically</div>
+                    </div>
+                </div>
+            </div> -->
         </template>
     </LayoutDashboard>
 </template>

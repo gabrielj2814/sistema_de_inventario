@@ -1,9 +1,8 @@
 <!-- modulo de personal -->
 # Por hacer
 - [ ] Modulo de Personal Administrativo
-  - [ ] crear el componente para los rigistros en vista movil
-  - [ ] componente de alerta
   - [ ] componente de notifición para mostrar en la pantalla
+  - [ ] componente de alerta
   - [ ] modal para ver el detalle del registro
   - [ ] modal para eliminar registro
   - [ ] hacer el modulo funcional
