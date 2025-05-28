@@ -12,6 +12,7 @@
     - [ ] ver datos mediante la modal
     - [ ] listar datos desktop 
     - [ ] listar datos movil
+    - [ ] cuando se cree un usuario se le envie un correo con su clave ya que el sistema le auto genera una clave
 
 # Por Hacer General
 - [ ] Implementar docker para Desarrollo y Producción
