@@ -3,7 +3,7 @@ import NavbarDashboard from '@/components/NavbarDashboard.vue';
 import { inject } from 'vue';
 
 const app_url= inject("app_url")
-console.log("url => ",app_url)
+// console.log("url => ",app_url)
 
 
 </script>

@@ -4,15 +4,18 @@ import Modal from '@/components/Modal.vue';
 import Table from '@/components/Table.vue';
 import TarjetaVistaMovil from '@/components/TarjetaVistaMovil.vue';
 import LayoutDashboard from '@/layouts/settings/LayoutDashboard.vue';
+import axios from 'axios';
+
 // imports
-import { provide, reactive, ref } from 'vue';
+import { provide, reactive } from 'vue';
 
 document.title = 'Modulo | Personal';
 
 const props = defineProps(['rutas', 'app_url']);
 
-const idModalFormulario = 'modaFormularioPersonal';
-
+const registros = new reactive({
+    data: [],
+});
 const camposFormulario = new reactive({
     id: '',
     name: '',
@@ -20,18 +23,27 @@ const camposFormulario = new reactive({
     email: '',
 });
 
-const rutas = new reactive(props.rutas);
-const app_url = new reactive(props.app_url);
-
-provide('rutas', rutas);
-provide('app_url', app_url);
+const mensajesFormulario = new reactive({
+    name: '',
+    last_name: '',
+    email: '',
+});
 
 const state = new reactive({
     modoFormularioModal: false,
 });
 
+const rutas = new reactive(props.rutas);
+const app_url = new reactive({ url: props.app_url });
+
+const idModalFormulario = 'modaFormularioPersonal';
+
+provide('rutas', rutas);
+provide('app_url', app_url);
+
 const modoModal = (id) => {
-    console.log('id => ', id);
+    // console.log('id => ', id);
+    limpiarFormulario();
 
     if (!id) {
         state.modoFormularioModal = true;
@@ -41,10 +53,45 @@ const modoModal = (id) => {
 };
 
 const cargarData = () => {
-    console.log('data formulario => ', camposFormulario);
+    let token = document.head.querySelector('meta[name="csrf-token"]');
+    const DATA = { ...camposFormulario };
+    DATA['_token'] = token.content;
+    console.log('data a enviar => ', DATA);
+    enviarDatos(DATA);
 };
 
-let lista = [1, 2, 3, 4, 5];
+function enviarDatos(data) {
+    axios
+        .post('/app/admin/user', data)
+        .then((res) => {
+            console.log('respuesta => ', res.data);
+        })
+        .catch((error) => {
+            let { errors } = error.response.data.data;
+            cargarErroresFormulario(errors);
+            console.error('error => ', errors);
+        });
+}
+
+function limpiarFormulario() {
+    // modal
+    state.modoFormularioModal = false;
+    // input
+    camposFormulario.id = '';
+    camposFormulario.name = '';
+    camposFormulario.last_name = '';
+    camposFormulario.email = '';
+    // mensaje
+    mensajesFormulario.name = '';
+    mensajesFormulario.last_name = '';
+    mensajesFormulario.email = '';
+}
+
+function cargarErroresFormulario(errores) {
+    mensajesFormulario.name = errores.name.join(', ');
+    mensajesFormulario.last_name = errores.last_name.join(', ');
+    mensajesFormulario.email = errores.email.join(', ');
+}
 
 // const toastElement = ref(null);
 // let toast = null;
@@ -117,11 +164,11 @@ let lista = [1, 2, 3, 4, 5];
                         <tr>
                             <th>Full Name</th>
                             <th>Email</th>
-                            <th class=" text-end">Acciones</th>
+                            <th class="text-end">Acciones</th>
                         </tr>
                     </template>
                     <template #body>
-                        <tr v-for="item in lista" :key="item">
+                        <tr v-if="registros.data.length > 0" v-for="registro in registros.data" :key="registro.id">
                             <td>test</td>
                             <td>test@gmail.com</td>
                             <td>
@@ -152,7 +199,7 @@ let lista = [1, 2, 3, 4, 5];
                                         </button>
                                     </div>
                                     <div class="col-auto">
-                                        <button class="btn btn-info">
+                                        <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#idModalVerDatos">
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 width="24"
@@ -172,7 +219,7 @@ let lista = [1, 2, 3, 4, 5];
                                         </button>
                                     </div>
                                     <div class="col-auto">
-                                        <button class="btn btn-danger">
+                                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#idModalEliminar">
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 width="24"
@@ -197,14 +244,18 @@ let lista = [1, 2, 3, 4, 5];
                                 </div>
                             </td>
                         </tr>
+                        <tr v-if="registros.data.length == 0">
+                            <td colspan="3" class="text-center">Sin Registros</td>
+                        </tr>
                     </template>
                     <template #caption> Rigistro del modulo Personal </template>
                 </Table>
+                <!-- mostrar datos en movil -->
                 <div class="row d-flex d-lg-none">
                     <div class="col-12">
                         <h3>Registros</h3>
                     </div>
-                    <div class="col-12 mb-2" v-for="item in lista" :key="item">
+                    <div class="col-12 mb-2"v-if="registros.data.length > 0" v-for="registro in registros.data" :key="registro.id">
                         <TarjetaVistaMovil>
                             <template #body>
                                 <div class="card-text">Nombre: roote</div>
@@ -284,7 +335,6 @@ let lista = [1, 2, 3, 4, 5];
                         </TarjetaVistaMovil>
                     </div>
                 </div>
-                <!-- mostrar datos en movil -->
 
                 <!-- modal -->
             </div>
@@ -297,39 +347,48 @@ let lista = [1, 2, 3, 4, 5];
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-12">
-                                    <div class="input-group mb-3">
+                                    <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1">Nombre</span>
                                         <input
                                             type="text"
+                                            id="name"
+                                            name="name"
                                             class="form-control"
                                             placeholder="Nombre"
                                             aria-label="Nombre"
                                             aria-describedby="basic-addon1"
-                                            :model="camposFormulario.name"
+                                            v-model="camposFormulario.name"
                                         />
                                     </div>
-                                    <div class="input-group mb-3">
+                                    <div class="text-danger mb-3" id="error_name" name="error_name">{{ mensajesFormulario.name }}</div>
+                                    <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1">Apellido</span>
                                         <input
                                             type="text"
+                                            id="last_name"
+                                            name="last_name"
                                             class="form-control"
                                             placeholder="Apellido"
                                             aria-label="Apellido"
                                             aria-describedby="basic-addon1"
-                                            :model="camposFormulario.last_name"
+                                            v-model="camposFormulario.last_name"
                                         />
                                     </div>
-                                    <div class="input-group mb-3">
+                                    <div class="text-danger mb-3" id="error_last_name" name="error_last_name">{{ mensajesFormulario.last_name }}</div>
+                                    <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1">Correo</span>
                                         <input
                                             type="email"
+                                            id="email"
+                                            name="email"
                                             class="form-control"
                                             placeholder="Correo"
                                             aria-label="Correo"
                                             aria-describedby="basic-addon1"
-                                            :model="camposFormulario.email"
+                                            v-model="camposFormulario.email"
                                         />
                                     </div>
+                                    <div class="text-danger mb-3" id="error_email" name="error_email">{{ mensajesFormulario.email }}</div>
                                 </div>
                             </div>
                         </div>
@@ -339,6 +398,40 @@ let lista = [1, 2, 3, 4, 5];
                     <button v-if="state.modoFormularioModal" type="button" class="btn btn-primary" @click="cargarData">Registrar</button>
                     <button v-else class="btn btn-warning" @click="cargarData">Actualizar</button>
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                </template>
+            </Modal>
+            <Modal id-modal="idModalVerDatos" clases="">
+                <template #header>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Ver Datos</h1>
+                </template>
+                <template #body>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12"><span style="font-weight: bold">Nombre:</span> X</div>
+                            <div class="col-12"><span style="font-weight: bold">Apellido:</span> X</div>
+                            <div class="col-12"><span style="font-weight: bold">Email:</span> X</div>
+                        </div>
+                    </div>
+                </template>
+                <!-- <template #footer>
+                </template> -->
+            </Modal>
+            <Modal id-modal="idModalEliminar" clases="">
+                <template #header>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar</h1>
+                </template>
+                <template #body>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h3>Esta seguro que desea eliminar el registro</h3>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                <template #footer>
+                    <button class="btn btn-warning">Si</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
                 </template>
             </Modal>
             <!--

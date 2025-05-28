@@ -10,16 +10,11 @@ const props = defineProps(['classTable','classContenedorTabla']);
             </caption>
             <thead>
                 <slot name="head">
-                    <tr>
-                        <th>Registro</th>
-                    </tr>
                 </slot>
             </thead>
             <tbody>
                 <slot name="body">
-                    <tr>
-                        <th>Sin Registros</th>
-                    </tr>
+
                 </slot>
             </tbody>
             <tfoot>

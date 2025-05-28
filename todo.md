@@ -3,9 +3,15 @@
 - [ ] Modulo de Personal Administrativo
   - [ ] componente de notifición para mostrar en la pantalla
   - [ ] componente de alerta
-  - [ ] modal para ver el detalle del registro
-  - [ ] modal para eliminar registro
   - [ ] hacer el modulo funcional
+    - [ ] registrar
+    - [ ] editar
+    - [ ] eliminar (borrado suave)
+    - [ ] buscardo por nombre o correo
+    - [ ] filtrar por rol
+    - [ ] ver datos mediante la modal
+    - [ ] listar datos desktop 
+    - [ ] listar datos movil
 
 # Por Hacer General
 - [ ] Implementar docker para Desarrollo y Producción
