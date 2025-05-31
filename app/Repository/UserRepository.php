@@ -6,6 +6,7 @@ use App\Contracts\RepositoryWithSoftDelete;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements RepositoryWithSoftDelete {
@@ -61,6 +62,25 @@ class UserRepository implements RepositoryWithSoftDelete {
     function consultarTodo(): Collection
     {
         return User::all();
+    }
+
+    function consultarTodoPorRol($rol): Collection
+    {
+        return User::role($rol)->get();
+    }
+
+    function paginacion($filtros,$registrosPorPagina=10): LengthAwarePaginator
+    {
+        $query=User::query();
+        $query->with("roles");
+
+        if(array_key_exists("rol",$filtros)){
+            if($filtros["rol"]!="null"){
+               $query->role($filtros["rol"]);
+            }
+        }
+
+        return $query->paginate($registrosPorPagina);
     }
 
     function eliminar(int $id): void

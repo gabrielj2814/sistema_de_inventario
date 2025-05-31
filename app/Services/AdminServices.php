@@ -7,8 +7,9 @@ use App\Contracts\User;
 use App\Repository\UserRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 
-class AdminServices implements User {
+class AdminServices implements UseSSr {
 
 
     public function __construct(
@@ -17,6 +18,14 @@ class AdminServices implements User {
 
     public function consultAll(): Collection{
         return $this->userRepository->consultarTodo();
+    }
+
+    public function consultAllForRol($rol): Collection{
+        return $this->userRepository->consultarTodoPorRol($rol);
+    }
+
+    public function paginacion($filtros=[]): LengthAwarePaginator{
+        return $this->userRepository->paginacion($filtros);
     }
 
     public function consultForId($id): Model | null{

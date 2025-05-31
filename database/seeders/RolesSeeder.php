@@ -22,11 +22,11 @@ class RolesSeeder extends Seeder
         //
 
         $roles=[
+            // "Administrator",
             "Web-Master",
             "Web-Super-Admin",
             "Web-Team-default-Member",
-            //
-            // "Administrator",
+            // cliente
             "Customer",
             "Customer-Premium",
             "Employee",

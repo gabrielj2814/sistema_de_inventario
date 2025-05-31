@@ -21,6 +21,10 @@ class AdminController extends Controller
     //
 
 
+    public function __construct(
+        protected User $user
+    ){}
+
     public function viewIndex(Request $request){
         $rutas=Route::getRoutes()->getRoutesByName();
         $app_url=env("APP_URL");
@@ -31,13 +35,29 @@ class AdminController extends Controller
         ]);
     }
 
-    public function __construct(
-        protected User $user
-    ){}
+
 
     public function consultAll(Request $request):JsonResponse{
 
         $users=$this->user->consultAll();
+
+        return ApiResponse::success($users,"ok",200);
+    }
+
+    public function consultAllForRol($rol):JsonResponse{
+
+        $users=$this->user->consultAllForRol($rol);
+
+        return ApiResponse::success($users,"ok",200);
+    }
+
+    public function paginacion(Request $request):JsonResponse{
+
+        $filtros=[
+            "rol" => $request->rol,
+        ];
+
+        $users=$this->user->paginacion($filtros);
 
         return ApiResponse::success($users,"ok",200);
     }

@@ -40,12 +40,14 @@ Route::prefix("app")->middleware("auth")->group(function(){
     Route::prefix("admin")->group(function(){
 
         Route::prefix("user")->group(function(){
-            Route::get("/index",   [AdminController::class,"viewIndex"])->name("view.personal.admin.index");
-            Route::get("/",        [AdminController::class,"consultAll"])->middleware("auth")->name("web.admin.all");
-            Route::get("/{id}",    [AdminController::class,"consultUserForId"])->middleware("auth")->name("web.admin.id");
-            Route::post("/",       [AdminController::class,"createdUser"])->middleware("auth")->name("web.admin.create");
-            Route::put("/{id}",    [AdminController::class,"updatedUser"])->middleware("auth")->name("web.admin.update");
-            Route::delete("/{id}", [AdminController::class,"deleteUser"])->middleware("auth")->name("web.admin.delete");
+            Route::get("/index",            [AdminController::class,"viewIndex"])->name("view.personal.admin.index");
+            Route::get("/",                 [AdminController::class,"consultAll"])->middleware("auth")->name("web.admin.all");
+            Route::post("/filtrar",          [AdminController::class,"paginacion"])->middleware("auth")->name("web.admin.paginacion");
+            // Route::get("/rol/{rol}",        [AdminController::class,"consultAllForRol"])->middleware("auth")->name("web.admin.rol");
+            // Route::get("/{id}",    [AdminController::class,"consultUserForId"])->middleware("auth")->name("web.admin.id");
+            Route::post("/",                [AdminController::class,"createdUser"])->middleware("auth")->name("web.admin.create");
+            Route::put("/{id}",             [AdminController::class,"updatedUser"])->middleware("auth")->name("web.admin.update");
+            Route::delete("/{id}",          [AdminController::class,"deleteUser"])->middleware("auth")->name("web.admin.delete");
         });
 
         Route::prefix("company")->group(function(){

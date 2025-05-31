@@ -7,15 +7,15 @@ import LayoutDashboard from '@/layouts/settings/LayoutDashboard.vue';
 import axios from 'axios';
 
 // imports
-import { provide, reactive } from 'vue';
-
-document.title = 'Modulo | Personal';
+import { provide, reactive, onMounted } from 'vue';
 
 const props = defineProps(['rutas', 'app_url']);
 
 const registros = new reactive({
+    paginate:{},
     data: [],
 });
+
 const camposFormulario = new reactive({
     id: '',
     name: '',
@@ -29,14 +29,13 @@ const mensajesFormulario = new reactive({
     email: '',
 });
 
+
 const state = new reactive({
     modoFormularioModal: false,
 });
 
 const rutas = new reactive(props.rutas);
 const app_url = new reactive({ url: props.app_url });
-
-const idModalFormulario = 'modaFormularioPersonal';
 
 provide('rutas', rutas);
 provide('app_url', app_url);
@@ -49,14 +48,32 @@ const modoModal = (id) => {
         state.modoFormularioModal = true;
     } else {
         state.modoFormularioModal = false;
+        let usuario=registros.data.find(reg => reg.id===id)
+        if(usuario){
+            camposFormulario.name=usuario.name
+            camposFormulario.last_name=usuario.last_name
+            camposFormulario.email=usuario.email
+        }
+
     }
 };
+
+function verDetalleUsuarioModal(id){
+    let usuario=registros.data.find(reg => reg.id===id)
+    console.log(usuario)
+    if(usuario){
+        document.getElementById("ver_name").textContent=usuario.name
+        document.getElementById("ver_last_name").textContent=usuario.last_name
+        document.getElementById("ver_email").textContent=usuario.email
+        document.getElementById("ver_rol").textContent=usuario.roles.map(rol => rol.name),join(", ")
+    }
+}
 
 const cargarData = () => {
     let token = document.head.querySelector('meta[name="csrf-token"]');
     const DATA = { ...camposFormulario };
     DATA['_token'] = token.content;
-    console.log('data a enviar => ', DATA);
+    // console.log('data a enviar => ', DATA);
     enviarDatos(DATA);
 };
 
@@ -64,7 +81,7 @@ function enviarDatos(data) {
     axios
         .post('/app/admin/user', data)
         .then((res) => {
-            console.log('respuesta => ', res.data);
+            // console.log('respuesta => ', res.data);
         })
         .catch((error) => {
             let { errors } = error.response.data.data;
@@ -92,6 +109,31 @@ function cargarErroresFormulario(errores) {
     mensajesFormulario.last_name = errores.last_name.join(', ');
     mensajesFormulario.email = errores.email.join(', ');
 }
+
+function consultarUsuario(page=0){
+    let token = document.head.querySelector('meta[name="csrf-token"]');
+    let rol=document.getElementById("filtro_rol").value
+    let data={
+        _token:token,
+        rol,
+    }
+    axios.post(`/app/admin/user/filtrar?page=${page}`,data)
+    .then(res => {
+        // console.log("res servidor => ",res)
+        registros.paginate={...res.data.data}
+        registros.data=[...res.data.data.data]
+
+    })
+    .catch(error => {
+        console.error("error servidor => ",error)
+    })
+}
+
+onMounted(() => {
+    document.title = 'Modulo | Personal';
+    // console.log(document.getElementById("modaFormularioPersonal"))
+    consultarUsuario()
+})
 
 // const toastElement = ref(null);
 // let toast = null;
@@ -129,7 +171,7 @@ function cargarErroresFormulario(errores) {
                         <button
                             class="btn btn-primary d-none d-lg-block"
                             data-bs-toggle="modal"
-                            :data-bs-target="'#' + idModalFormulario"
+                            :data-bs-target="'#modaFormularioPersonal'"
                             @click="modoModal(null)"
                         >
                             <svg
@@ -149,7 +191,7 @@ function cargarErroresFormulario(errores) {
                         <button
                             class="btn btn-primary d-block d-lg-none mb-2 w-100"
                             data-bs-toggle="modal"
-                            :data-bs-target="'#' + idModalFormulario"
+                            :data-bs-target="'#modaFormularioPersonal'"
                             @click="modoModal(null)"
                         >
                             Nuevo Registro
@@ -157,6 +199,27 @@ function cargarErroresFormulario(errores) {
                     </div>
                 </div>
                 <div class="mb-2 border"></div>
+                <!-- filtros -->
+                <div class="row mb-">
+                    <div class="mb-2 mb-lg-0 col-12 col-sm-12 col-md-3 col-lg-3">
+                        <div class="form-group" @change="consultarUsuario()">
+                            <select name="filtro_rol" id="filtro_rol" class="form-select">
+                                <option value="null">Seleccione un rol</option>
+                                <option value="Web-Master">Master</option>
+                                <option value="Web-Super-Admin">Super-Admin</option>
+                                <option value="Web-Team-default-Member">Team default Member</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-2 mb-lg-0 col-12 col-sm-9 col-md-4 col-lg-4">
+                        <div class="form-group">
+                            <input type="text" id="search" name="search" class="form-control" placeholder="buscar por nombre o correo">
+                        </div>
+                    </div>
+                    <div class="mb-2 mb-lg-0 col-12 col-sm-3 col-md-2 col-lg-1">
+                        <button class="btn btn-primary w-100" @click="consultarUsuario()">Buscar</button>
+                    </div>
+                </div>
                 <!-- tabla -->
                 <!-- mostar datos en desktop -->
                 <Table class-table="table-dark caption-top" class-contenedor-tabla="d-none d-lg-block">
@@ -164,21 +227,23 @@ function cargarErroresFormulario(errores) {
                         <tr>
                             <th>Full Name</th>
                             <th>Email</th>
+                            <th>Rol</th>
                             <th class="text-end">Acciones</th>
                         </tr>
                     </template>
                     <template #body>
                         <tr v-if="registros.data.length > 0" v-for="registro in registros.data" :key="registro.id">
-                            <td>test</td>
-                            <td>test@gmail.com</td>
+                            <td>{{registro.name}} {{registro.last_name}}</td>
+                            <td>{{registro.email}}</td>
+                            <td>{{registro.roles.map(rol => rol.name).join(", ")}}</td>
                             <td>
                                 <div class="row justify-content-end m-0">
                                     <div class="col-auto">
                                         <button
                                             class="btn btn-warning"
-                                            @click="modoModal(1)"
+                                            @click="modoModal(registro.id)"
                                             data-bs-toggle="modal"
-                                            :data-bs-target="'#' + idModalFormulario"
+                                            :data-bs-target="'#modaFormularioPersonal'"
                                         >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -199,7 +264,7 @@ function cargarErroresFormulario(errores) {
                                         </button>
                                     </div>
                                     <div class="col-auto">
-                                        <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#idModalVerDatos">
+                                        <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#idModalVerDatos" @click="verDetalleUsuarioModal(registro.id)">
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 width="24"
@@ -245,7 +310,7 @@ function cargarErroresFormulario(errores) {
                             </td>
                         </tr>
                         <tr v-if="registros.data.length == 0">
-                            <td colspan="3" class="text-center">Sin Registros</td>
+                            <td colspan="4" class="text-center">Sin Registros</td>
                         </tr>
                     </template>
                     <template #caption> Rigistro del modulo Personal </template>
@@ -258,16 +323,17 @@ function cargarErroresFormulario(errores) {
                     <div class="col-12 mb-2"v-if="registros.data.length > 0" v-for="registro in registros.data" :key="registro.id">
                         <TarjetaVistaMovil>
                             <template #body>
-                                <div class="card-text">Nombre: roote</div>
-                                <div class="card-text">Apellido: roote</div>
-                                <div class="card-text mb-2">Email: roote@gmail.com</div>
+                                <div class="card-text">Nombre: {{registro.name}} </div>
+                                <div class="card-text">Apellido: {{registro.last_name}}</div>
+                                <div class="card-text mb-2">Email: {{registro.email}}</div>
+                                <div class="card-text mb-2">Rol: {{registro.roles.map(rol => rol.name).join(", ")}}</div>
                                 <div class="row justify-content-between">
                                     <div class="col-auto">
                                         <button
                                             class="btn btn-warning"
-                                            @click="modoModal(1)"
+                                            @click="modoModal(registro.id)"
                                             data-bs-toggle="modal"
-                                            :data-bs-target="'#' + idModalFormulario"
+                                            :data-bs-target="'#modaFormularioPersonal'"
                                         >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -288,7 +354,7 @@ function cargarErroresFormulario(errores) {
                                         </button>
                                     </div>
                                     <div class="col-auto">
-                                        <button class="btn btn-info">
+                                        <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#idModalVerDatos" @click="verDetalleUsuarioModal(registro.id)">
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 width="24"
@@ -338,7 +404,7 @@ function cargarErroresFormulario(errores) {
 
                 <!-- modal -->
             </div>
-            <Modal :id-modal="idModalFormulario" clases="modal-lg">
+            <Modal id-modal="modaFormularioPersonal" clases="modal-lg">
                 <template #header>
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Formulario</h1>
                 </template>
@@ -407,9 +473,10 @@ function cargarErroresFormulario(errores) {
                 <template #body>
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-12"><span style="font-weight: bold">Nombre:</span> X</div>
-                            <div class="col-12"><span style="font-weight: bold">Apellido:</span> X</div>
-                            <div class="col-12"><span style="font-weight: bold">Email:</span> X</div>
+                            <div class="col-12">Nombre: <span style="font-weight: bold" id="ver_name"></span></div>
+                            <div class="col-12">Apellido: <span style="font-weight: bold" id="ver_last_name"></span></div>
+                            <div class="col-12">Email: <span style="font-weight: bold" id="ver_email"></span></div>
+                            <div class="col-12">Rol: <span style="font-weight: bold" id="ver_rol"></span></div>
                         </div>
                     </div>
                 </template>

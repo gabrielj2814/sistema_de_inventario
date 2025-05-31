@@ -4,14 +4,15 @@
   - [ ] componente de notifición para mostrar en la pantalla
   - [ ] componente de alerta
   - [ ] hacer el modulo funcional
-    - [ ] registrar
+    - [X] registrar
     - [ ] editar
+    - [ ] validar formulario
     - [ ] eliminar (borrado suave)
     - [ ] buscardo por nombre o correo
-    - [ ] filtrar por rol
-    - [ ] ver datos mediante la modal
-    - [ ] listar datos desktop 
-    - [ ] listar datos movil
+    - [X] filtrar por rol
+    - [X] ver datos mediante la modal
+    - [X] listar datos desktop 
+    - [X] listar datos movil
     - [ ] cuando se cree un usuario se le envie un correo con su clave ya que el sistema le auto genera una clave
 
 # Por Hacer General
