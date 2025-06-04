@@ -50,6 +50,7 @@ const modoModal = (id) => {
         state.modoFormularioModal = false;
         let usuario=registros.data.find(reg => reg.id===id)
         if(usuario){
+            camposFormulario.id=id
             camposFormulario.name=usuario.name
             camposFormulario.last_name=usuario.last_name
             camposFormulario.email=usuario.email
@@ -74,20 +75,42 @@ const cargarData = () => {
     const DATA = { ...camposFormulario };
     DATA['_token'] = token.content;
     // console.log('data a enviar => ', DATA);
-    enviarDatos(DATA);
+    if(DATA.id==""){
+        crear(DATA);
+    }else{
+        editar(DATA);
+    }
 };
 
-function enviarDatos(data) {
+function crear(data) {
     axios
-        .post('/app/admin/user', data)
-        .then((res) => {
-            // console.log('respuesta => ', res.data);
-        })
-        .catch((error) => {
-            let { errors } = error.response.data.data;
-            cargarErroresFormulario(errors);
-            console.error('error => ', errors);
-        });
+    .post('/app/admin/user', data)
+    .then((res) => {
+        // console.log('respuesta => ', res.data);
+        ejecutarModal("#modaFormularioPersonal")
+        consultarUsuario()
+    })
+    .catch((error) => {
+        let { errors } = error.response.data.data;
+        cargarErroresFormulario(errors);
+        console.error('error => ', errors);
+    });
+}
+
+
+function editar(data) {
+    axios
+    .put(`/app/admin/user/${data.id}`, data)
+    .then((res) => {
+        // console.log('respuesta => ', res.data);
+        ejecutarModal("#modaFormularioPersonal")
+        consultarUsuario()
+    })
+    .catch((error) => {
+        let { errors } = error.response.data.data;
+        cargarErroresFormulario(errors);
+        console.error('error => ', errors);
+    });
 }
 
 function limpiarFormulario() {
@@ -105,9 +128,10 @@ function limpiarFormulario() {
 }
 
 function cargarErroresFormulario(errores) {
-    mensajesFormulario.name = errores.name.join(', ');
-    mensajesFormulario.last_name = errores.last_name.join(', ');
-    mensajesFormulario.email = errores.email.join(', ');
+
+    mensajesFormulario.name = (errores.name)?errores.name.join(', '):"";
+    mensajesFormulario.last_name = (errores.last_name)?errores.last_name.join(', '):"";
+    mensajesFormulario.email = (errores.email)?errores.email.join(', '):"";
 }
 
 function consultarUsuario(page=0){
@@ -123,6 +147,33 @@ function consultarUsuario(page=0){
         registros.paginate={...res.data.data}
         registros.data=[...res.data.data.data]
 
+    })
+    .catch(error => {
+        console.error("error servidor => ",error)
+    })
+}
+
+function ejecutarModal(idModal){
+    let botonModal=document.createElement("button")
+    botonModal.setAttribute("data-bs-toggle","modal")
+    botonModal.setAttribute("data-bs-target",idModal)
+    botonModal.click()
+    document.body.appendChild(botonModal); // Lo agregamos aunque no sea visible
+    botonModal.click();
+    setTimeout(() => botonModal.remove(), 0);
+}
+
+function cargarIdEliminarRegistro(id){
+    document.getElementById("idEliminar").value=id
+}
+
+function eliminar(){
+    let  id=document.getElementById("idEliminar").value
+    axios.delete(`/app/admin/user/${id}`)
+    .then(res => {
+        // console.log("res servidor => ",res)
+        ejecutarModal("#idModalEliminar")
+        consultarUsuario()
     })
     .catch(error => {
         console.error("error servidor => ",error)
@@ -284,7 +335,7 @@ onMounted(() => {
                                         </button>
                                     </div>
                                     <div class="col-auto">
-                                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#idModalEliminar">
+                                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#idModalEliminar" @click="cargarIdEliminarRegistro(registro.id)">
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 width="24"
@@ -374,7 +425,7 @@ onMounted(() => {
                                         </button>
                                     </div>
                                     <div class="col-auto">
-                                        <button class="btn btn-danger">
+                                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#idModalEliminar" @click="cargarIdEliminarRegistro(registro.id)">
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 width="24"
@@ -452,6 +503,7 @@ onMounted(() => {
                                             aria-label="Correo"
                                             aria-describedby="basic-addon1"
                                             v-model="camposFormulario.email"
+                                            :disabled="state.modoFormularioModal==false"
                                         />
                                     </div>
                                     <div class="text-danger mb-3" id="error_email" name="error_email">{{ mensajesFormulario.email }}</div>
@@ -488,6 +540,7 @@ onMounted(() => {
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar</h1>
                 </template>
                 <template #body>
+                    <input type="hidden" name="idEliminar" id="idEliminar">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-12 text-center">
@@ -497,7 +550,7 @@ onMounted(() => {
                     </div>
                 </template>
                 <template #footer>
-                    <button class="btn btn-warning">Si</button>
+                    <button class="btn btn-warning" @click="eliminar()">Si</button>
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
                 </template>
             </Modal>

@@ -5,9 +5,9 @@
   - [ ] componente de alerta
   - [ ] hacer el modulo funcional
     - [X] registrar
-    - [ ] editar
-    - [ ] validar formulario
-    - [ ] eliminar (borrado suave)
+    - [X] editar
+    - [X] validar formulario
+    - [X] eliminar (borrado suave)
     - [ ] buscardo por nombre o correo
     - [X] filtrar por rol
     - [X] ver datos mediante la modal

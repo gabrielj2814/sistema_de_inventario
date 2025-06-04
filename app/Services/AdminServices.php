@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class AdminServices implements UseSSr {
+class AdminServices implements User {
 
 
     public function __construct(
