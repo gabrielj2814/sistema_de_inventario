@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -14,8 +15,9 @@ class CreatedAdminUserEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
+    public User $user;
     public $passwordTextPlain;
+    public $loginUrl;
 
     /**
      * Create a new event instance.
@@ -25,6 +27,7 @@ class CreatedAdminUserEvent
         //
         $this->user= $data['user'];
         $this->passwordTextPlain= $data['passwordTextPlain'];
+        $this->loginUrl= $data['loginUrl'];
     }
 
     /**

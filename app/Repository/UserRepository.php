@@ -69,18 +69,32 @@ class UserRepository implements RepositoryWithSoftDelete {
         return User::role($rol)->get();
     }
 
-    function paginacion($filtros,$registrosPorPagina=10): LengthAwarePaginator
+    function paginacion($filtros,$registrosPorPagina,$withoutRole): LengthAwarePaginator
     {
-        $query=User::query();
-        $query->with("roles");
+        $consulta=User::query();
+        $consulta->with("roles");
+
+        if(count($withoutRole)>0){
+            $consulta->withoutRole($withoutRole);
+        }
 
         if(array_key_exists("rol",$filtros)){
             if($filtros["rol"]!="null"){
-               $query->role($filtros["rol"]);
+               $consulta->role($filtros["rol"]);
             }
         }
 
-        return $query->paginate($registrosPorPagina);
+        if(array_key_exists("search",$filtros)){
+            if($filtros["search"]!=""){
+               $consulta->where(function($query) use($filtros){
+                    $query->whereRaw("CONCAT(name,' ',last_name) LIKE ?", ["%{$filtros["search"]}%"])
+                    ->orWhereRaw("CONCAT(last_name,' ',name) LIKE ?", ["%{$filtros["search"]}%"])
+                    ->orWhere("email","like","%".$filtros["search"]."%");
+               });
+            }
+        }
+
+        return $consulta->paginate($registrosPorPagina);
     }
 
     function eliminar(int $id): void

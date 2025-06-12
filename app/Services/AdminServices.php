@@ -24,8 +24,9 @@ class AdminServices implements User {
         return $this->userRepository->consultarTodoPorRol($rol);
     }
 
-    public function paginacion($filtros=[]): LengthAwarePaginator{
-        return $this->userRepository->paginacion($filtros);
+    public function paginacion($filtros=[],$registroPorPagina=10,$withoutRole=[]): LengthAwarePaginator{
+
+        return $this->userRepository->paginacion($filtros,$registroPorPagina,$withoutRole);
     }
 
     public function consultForId($id): Model | null{

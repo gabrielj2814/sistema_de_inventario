@@ -55,9 +55,19 @@ class AdminController extends Controller
 
         $filtros=[
             "rol" => $request->rol,
+            "search" => $request->search,
         ];
 
-        $users=$this->user->paginacion($filtros);
+        $registroPorPagina=10;
+        $withoutRole=[
+            "Customer",
+            "Customer-Premium",
+            "Employee",
+            "Employee-administrador",
+        ];
+
+
+        $users=$this->user->paginacion($filtros,$registroPorPagina,$withoutRole);
 
         return ApiResponse::success($users,"ok",200);
     }
@@ -97,8 +107,9 @@ class AdminController extends Controller
             $createdUser=$this->user->create($data);
 
             $dataEven=[
-                "user"              => $createdUser,
-                "passwordTextPlain" => $generatedPassword,
+                "user"=>$createdUser,
+                "passwordTextPlain"=>$generatedPassword,
+                "loginUrl"=> route("view.auth.login.admin"),
             ];
 
             CreatedAdminUserEvent::dispatch($dataEven);

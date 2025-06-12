@@ -25,6 +25,6 @@ class SendEmailWithPasswordToAdminUserListener
     {
         //
 
-        Mail::to($event->user->email)->send(new SendPasswordToAdminUserMail($event->user,$event->passwordTextPlain));
+        Mail::to($event->user->email)->send(new SendPasswordToAdminUserMail($event->user,$event->passwordTextPlain,$event->loginUrl));
     }
 }

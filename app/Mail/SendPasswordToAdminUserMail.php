@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -17,14 +18,16 @@ class SendPasswordToAdminUserMail extends Mailable
      * Create a new message instance.
      */
 
-    public $user;
+    public User $user;
     public $passwordTextPlain;
+    public $loginUrl;
 
-    public function __construct($user,$passwordTextPlain)
+    public function __construct($user,$passwordTextPlain,$loginUrl)
     {
         //
         $this->user= $user;
         $this->passwordTextPlain= $passwordTextPlain;
+        $this->loginUrl= $loginUrl;
     }
 
     /**
@@ -47,6 +50,7 @@ class SendPasswordToAdminUserMail extends Mailable
             with: [
                 'user' => $this->user,
                 'passwordTextPlain' => $this->passwordTextPlain,
+                'loginUrl' => $this->loginUrl,
             ],
         );
     }

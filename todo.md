@@ -8,12 +8,14 @@
     - [X] editar
     - [X] validar formulario
     - [X] eliminar (borrado suave)
-    - [ ] buscardo por nombre o correo
+    - [X] buscardo por nombre o correo
     - [X] filtrar por rol
     - [X] ver datos mediante la modal
-    - [X] listar datos desktop 
+    - [X] listar datos desktop
     - [X] listar datos movil
-    - [ ] cuando se cree un usuario se le envie un correo con su clave ya que el sistema le auto genera una clave
+    - [X] cuando se cree un usuario se le envie un correo con su clave ya que el sistema le auto genera una clave
+    - [ ] crear controles de la paginación
+    - [ ] loader
 
 # Por Hacer General
 - [ ] Implementar docker para Desarrollo y Producción

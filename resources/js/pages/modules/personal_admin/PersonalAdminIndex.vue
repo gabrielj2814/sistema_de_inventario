@@ -134,12 +134,14 @@ function cargarErroresFormulario(errores) {
     mensajesFormulario.email = (errores.email)?errores.email.join(', '):"";
 }
 
-function consultarUsuario(page=0){
-    let token = document.head.querySelector('meta[name="csrf-token"]');
+function consultarUsuario(page=1){
+    let token = document.head.querySelector('meta[name="csrf-token"]').content;
     let rol=document.getElementById("filtro_rol").value
+    let search=document.getElementById("search").value
     let data={
         _token:token,
         rol,
+        search
     }
     axios.post(`/app/admin/user/filtrar?page=${page}`,data)
     .then(res => {
