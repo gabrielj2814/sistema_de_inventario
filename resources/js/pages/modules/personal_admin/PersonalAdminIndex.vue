@@ -2,6 +2,7 @@
 // components
 import Loader from '@/components/loader.vue';
 import Modal from '@/components/Modal.vue';
+import PaginationControls from '@/components/PaginationControls.vue';
 import Table from '@/components/Table.vue';
 import TarjetaVistaMovil from '@/components/TarjetaVistaMovil.vue';
 import LayoutDashboard from '@/layouts/settings/LayoutDashboard.vue';
@@ -472,7 +473,8 @@ onMounted(() => {
                     </div>
                 </div>
 
-                <!-- modal -->
+                <PaginationControls :paginate="registros.paginate" :paginar="consultarUsuario"/>
+
             </div>
             <Modal id-modal="modaFormularioPersonal" clases="modal-lg">
                 <template #header>

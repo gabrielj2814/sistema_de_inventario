@@ -3,7 +3,7 @@
 - [ ] Modulo de Personal Administrativo
   - [ ] componente de notifición para mostrar en la pantalla
   - [ ] componente de alerta
-  - [ ] hacer el modulo funcional
+  - [X] hacer el modulo funcional
     - [X] registrar
     - [X] editar
     - [X] validar formulario
@@ -14,7 +14,7 @@
     - [X] listar datos desktop
     - [X] listar datos movil
     - [X] cuando se cree un usuario se le envie un correo con su clave ya que el sistema le auto genera una clave
-    - [ ] crear controles de la paginación
+    - [X] crear controles de la paginación
     - [X] loader
 
 # Por Hacer General
