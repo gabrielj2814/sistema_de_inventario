@@ -1,5 +1,6 @@
 <script setup lang="js">
 // components
+import Loader from '@/components/loader.vue';
 import Modal from '@/components/Modal.vue';
 import Table from '@/components/Table.vue';
 import TarjetaVistaMovil from '@/components/TarjetaVistaMovil.vue';
@@ -32,6 +33,7 @@ const mensajesFormulario = new reactive({
 
 const state = new reactive({
     modoFormularioModal: false,
+    loaderApp: false,
 });
 
 const rutas = new reactive(props.rutas);
@@ -83,10 +85,12 @@ const cargarData = () => {
 };
 
 function crear(data) {
+    state.loaderApp=true
     axios
     .post('/app/admin/user', data)
     .then((res) => {
         // console.log('respuesta => ', res.data);
+        state.loaderApp=false
         ejecutarModal("#modaFormularioPersonal")
         consultarUsuario()
     })
@@ -94,15 +98,18 @@ function crear(data) {
         let { errors } = error.response.data.data;
         cargarErroresFormulario(errors);
         console.error('error => ', errors);
+        state.loaderApp=false
     });
 }
 
 
 function editar(data) {
+    state.loaderApp=true
     axios
     .put(`/app/admin/user/${data.id}`, data)
     .then((res) => {
         // console.log('respuesta => ', res.data);
+        state.loaderApp=false
         ejecutarModal("#modaFormularioPersonal")
         consultarUsuario()
     })
@@ -110,6 +117,7 @@ function editar(data) {
         let { errors } = error.response.data.data;
         cargarErroresFormulario(errors);
         console.error('error => ', errors);
+        state.loaderApp=false
     });
 }
 
@@ -135,6 +143,7 @@ function cargarErroresFormulario(errores) {
 }
 
 function consultarUsuario(page=1){
+    state.loaderApp=true
     let token = document.head.querySelector('meta[name="csrf-token"]').content;
     let rol=document.getElementById("filtro_rol").value
     let search=document.getElementById("search").value
@@ -148,9 +157,11 @@ function consultarUsuario(page=1){
         // console.log("res servidor => ",res)
         registros.paginate={...res.data.data}
         registros.data=[...res.data.data.data]
+        state.loaderApp=false
 
     })
     .catch(error => {
+        state.loaderApp=false
         console.error("error servidor => ",error)
     })
 }
@@ -170,21 +181,23 @@ function cargarIdEliminarRegistro(id){
 }
 
 function eliminar(){
+    state.loaderApp=true
     let  id=document.getElementById("idEliminar").value
     axios.delete(`/app/admin/user/${id}`)
     .then(res => {
         // console.log("res servidor => ",res)
+        state.loaderApp=false
         ejecutarModal("#idModalEliminar")
         consultarUsuario()
     })
     .catch(error => {
+        state.loaderApp=false
         console.error("error servidor => ",error)
     })
 }
 
 onMounted(() => {
     document.title = 'Modulo | Personal';
-    // console.log(document.getElementById("modaFormularioPersonal"))
     consultarUsuario()
 })
 
@@ -212,8 +225,12 @@ onMounted(() => {
 <style></style>
 
 <template>
+    <Loader :statu="state.loaderApp"/>
     <LayoutDashboard>
         <template #SectionContent>
+
+
+
             <!-- modulo de personal administrativo -->
             <div class="rounded-2 p-3 pb-5 shadow">
                 <div class="row justify-content-between">

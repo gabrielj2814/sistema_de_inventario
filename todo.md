@@ -15,7 +15,7 @@
     - [X] listar datos movil
     - [X] cuando se cree un usuario se le envie un correo con su clave ya que el sistema le auto genera una clave
     - [ ] crear controles de la paginación
-    - [ ] loader
+    - [X] loader
 
 # Por Hacer General
 - [ ] Implementar docker para Desarrollo y Producción

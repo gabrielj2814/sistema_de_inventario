@@ -1,4 +1,5 @@
 <script setup >
+// import Loader from '@/components/loader.vue';
 import NavbarDashboard from '@/components/NavbarDashboard.vue';
 import { inject } from 'vue';
 
@@ -9,7 +10,6 @@ const app_url= inject("app_url")
 </script>
 
 <style scoped>
-
     .contenedor-main {
         background-color: #f8f9fa;
         height: 100vh;
@@ -19,6 +19,7 @@ const app_url= inject("app_url")
 
 <template>
     <!-- <div>hola</div> -->
+
     <main class="contenedor-main">
         <NavbarDashboard />
         <div class="section-content p-4">
