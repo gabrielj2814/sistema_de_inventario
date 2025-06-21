@@ -1,8 +1,7 @@
 <!-- modulo de personal -->
 # Por hacer
 - [ ] Modulo de Personal Administrativo
-  - [ ] componente de notifición para mostrar en la pantalla
-  - [ ] componente de alerta
+  - [X] componente de notifición para mostrar en la pantalla
   - [X] hacer el modulo funcional
     - [X] registrar
     - [X] editar

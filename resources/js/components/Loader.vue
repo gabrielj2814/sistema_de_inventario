@@ -10,7 +10,7 @@ let props = defineProps(["statu"])
 .contendor-loader{
     position: absolute;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     background-color: #111111b2;
     display: flex;
     flex-direction: row;

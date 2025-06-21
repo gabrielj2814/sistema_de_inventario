@@ -14,6 +14,9 @@ const app_url= inject("app_url")
         background-color: #f8f9fa;
         height: 100vh;
         padding-top: 60px;
+        max-width: 1500px;
+        margin-left: auto;
+        margin-right: auto;
     }
 </style>
 

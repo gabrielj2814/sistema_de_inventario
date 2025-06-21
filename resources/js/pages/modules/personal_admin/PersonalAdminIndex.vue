@@ -1,15 +1,18 @@
 <script setup lang="js">
 // components
-import Loader from '@/components/loader.vue';
+import Loader from '@/components/Loader.vue';
 import Modal from '@/components/Modal.vue';
 import PaginationControls from '@/components/PaginationControls.vue';
 import Table from '@/components/Table.vue';
 import TarjetaVistaMovil from '@/components/TarjetaVistaMovil.vue';
+import ToastNotificate from '@/components/ToastNotificate.vue';
 import LayoutDashboard from '@/layouts/settings/LayoutDashboard.vue';
-import axios from 'axios';
 
 // imports
+import axios from 'axios';
+import {v4 as uuidv4} from "uuid"
 import { provide, reactive, onMounted } from 'vue';
+
 
 const props = defineProps(['rutas', 'app_url']);
 
@@ -35,6 +38,7 @@ const mensajesFormulario = new reactive({
 const state = new reactive({
     modoFormularioModal: false,
     loaderApp: false,
+    list:[],
 });
 
 const rutas = new reactive(props.rutas);
@@ -93,10 +97,12 @@ function crear(data) {
         // console.log('respuesta => ', res.data);
         state.loaderApp=false
         ejecutarModal("#modaFormularioPersonal")
+        crearToast("Registro","Registro completado.")
         consultarUsuario()
     })
     .catch((error) => {
         let { errors } = error.response.data.data;
+        crearToast("Error","Error al registrar por favor contactar con soporte.")
         cargarErroresFormulario(errors);
         console.error('error => ', errors);
         state.loaderApp=false
@@ -113,12 +119,14 @@ function editar(data) {
         state.loaderApp=false
         ejecutarModal("#modaFormularioPersonal")
         consultarUsuario()
+        crearToast("Actualización","El registro fue actualizado exitosamente.")
     })
     .catch((error) => {
         let { errors } = error.response.data.data;
         cargarErroresFormulario(errors);
         console.error('error => ', errors);
         state.loaderApp=false
+        crearToast("Error","El registro no se puedo actualizar.")
     });
 }
 
@@ -165,6 +173,8 @@ function consultarUsuario(page=1){
         state.loaderApp=false
         console.error("error servidor => ",error)
     })
+
+    // this.$swal('Hello Vue world!!!');
 }
 
 function ejecutarModal(idModal){
@@ -190,10 +200,12 @@ function eliminar(){
         state.loaderApp=false
         ejecutarModal("#idModalEliminar")
         consultarUsuario()
+        crearToast("Eliminar","Eliminación completada.")
     })
     .catch(error => {
         state.loaderApp=false
         console.error("error servidor => ",error)
+        crearToast("Error","error al eliminar.")
     })
 }
 
@@ -202,31 +214,32 @@ onMounted(() => {
     consultarUsuario()
 })
 
-// const toastElement = ref(null);
-// let toast = null;
+function eliminarToast(id){
+    setTimeout(()=>{
+        console.log("Toast eliminado")
+        let list=[...state.list]
+        list=list.filter(ls => ls.id!=id)
+        state.list=list
+    },3000)
+}
 
-// onMounted(() => {
-//     if (toastElement.value) {
-//         toast = new Toast(toastElement.value, {
-//           autohide: true,
-//           delay: 5000
-//         }
-//     )
-//     }
-// })
+function crearToast(titulo="",body="",tiempo=""){
+    let toastNotificacion={
+        id:uuidv4(),
+        titulo,
+        body,
+        tiempo,
+    }
+    state.list.push(toastNotificacion)
+}
 
-// const showToast = () => {
-//     console.log(toast)
-//     if (toast) {
-//         toast.show()
-//     }
-// }
 </script>
 
 <style></style>
 
 <template>
     <Loader :statu="state.loaderApp"/>
+    <ToastNotificate :list="state.list" :eliminar-toast="eliminarToast"/>
     <LayoutDashboard>
         <template #SectionContent>
 
@@ -575,47 +588,6 @@ onMounted(() => {
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
                 </template>
             </Modal>
-            <!--
-            <button type="button" class="btn btn-primary" id="liveToastBtn" @click="showToast">Show live toast</button>
-
-                <div class="toast-container position-fixed bottom-0 end-0 p-3">
-                <div i  d="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" ref="toastElement">
-                    <div class="toast-header">
-                    <img src="" class="rounded me-2" alt="">
-                    <strong class="me-auto">Bootstrap</strong>
-                    <small>11 mins ago</small>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                    <div class="toast-body">
-                    Hello, world! This is a toast message.
-                    </div>
-                </div>
-            </div>
-            -->
-            <!-- notificaciones desktop -->
-            <!-- <div aria-live="polite" aria-atomic="true" class="position-relative">
-                <div class="toast-container end-0 top-0 p-3">
-                    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                        <div class="toast-header">
-                            <img src class="me-2 rounded" alt />
-                            <strong class="me-auto">Bootstrap</strong>
-                            <small class="text-body-secondary">just now</small>
-                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                        </div>
-                        <div class="toast-body">See? Just like this.</div>
-                    </div>
-
-                    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                        <div class="toast-header">
-                            <img src class="me-2 rounded" alt />
-                            <strong class="me-auto">Bootstrap</strong>
-                            <small class="text-body-secondary">2 seconds ago</small>
-                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                        </div>
-                        <div class="toast-body">Heads up, toasts will stack automatically</div>
-                    </div>
-                </div>
-            </div> -->
         </template>
     </LayoutDashboard>
 </template>
