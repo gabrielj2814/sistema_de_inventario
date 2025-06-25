@@ -1,3 +1,19 @@
+<!-- lista de modulos -->
+- [ ] formulario de registro company
+- [ ] login exclusivo de company
+- [ ] modulo de empleado comany
+- [ ] Categoria (company)
+- [ ] productos (company)
+- [ ] supplier (company)
+- [ ] producto supplier 
+- [ ] werehouse (company)
+- [ ] inventory wherehouse (company)
+- [ ] customer (company)
+- [ ] order (company)
+- [ ] customer (company)
+
+<!--  -->
+- [ ] login de company
 <!-- modulo de personal -->
 # Por hacer
 - [ ] Modulo de Personal Administrativo

@@ -309,7 +309,7 @@ function crearToast(titulo="",body="",tiempo=""){
                 <Table class-table="table-dark caption-top" class-contenedor-tabla="d-none d-lg-block">
                     <template #head>
                         <tr>
-                            <th>Full Name</th>
+                            <th>Nombre Completo</th>
                             <th>Email</th>
                             <th>Rol</th>
                             <th class="text-end">Acciones</th>
