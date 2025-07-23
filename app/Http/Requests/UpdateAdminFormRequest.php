@@ -38,7 +38,7 @@ class UpdateAdminFormRequest extends FormRequest
         ];
     }
 
-    public function menssages(){
+    public function messages(){
         return [
             "id.required"  => "the field is required",
             "id.exists"    => "the user was not found on the database",

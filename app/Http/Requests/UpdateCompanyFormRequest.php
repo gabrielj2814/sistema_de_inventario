@@ -39,7 +39,7 @@ class UpdateCompanyFormRequest extends FormRequest
         ];
     }
 
-    public function menssages(){
+    public function messages(){
         return [
             "id.required" => "the field is required",
             "id.exists" => "the company was not found on the database",

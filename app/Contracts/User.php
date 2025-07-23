@@ -21,6 +21,9 @@ interface User {
 
     public function consultForId(int $id): Model | null;
 
+    public function consultAllForRol(String $rol): Collection;
+
+
 }
 
 

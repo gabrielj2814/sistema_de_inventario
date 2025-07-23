@@ -36,7 +36,7 @@ class CreateAdminFormRequest extends FormRequest
         ];
     }
 
-    public function menssages(){
+    public function messages(){
         return [
             "name.required" => "the field is required",
             "name.string"   => "the field is type string",
