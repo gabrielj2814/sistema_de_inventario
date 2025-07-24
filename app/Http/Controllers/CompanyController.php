@@ -9,6 +9,8 @@ use App\Http\Requests\UpdateCompanyFormRequest;
 use App\Services\CompanyServices;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 class CompanyController extends Controller
 {
@@ -17,6 +19,16 @@ class CompanyController extends Controller
     public function __construct(
         protected CompanyServices $companyServices
     ){}
+
+    public function registroCompany(){
+        $rutas=Route::getRoutes()->getRoutesByName();
+        $app_url=env("APP_URL");
+
+        return Inertia::render("modules/company/CreateUserCompany",[
+            "rutas" => $rutas,
+            "app_url" => $app_url
+        ]);
+    }
 
     public function consultAllCompanies(Request $request): JsonResponse{
 

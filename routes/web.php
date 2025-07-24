@@ -68,6 +68,10 @@ Route::prefix("app")->middleware("auth")->group(function(){
 
 });
 
+Route::prefix("company")->group(function(){
+     Route::get("/create-account",   [CompanyController::class,"registroCompany"])->name("web.company.registre");
+});
+
 Route::prefix("auth")->group(function(){
     Route::get("/login",                         [LoginController::class,"view"])->name("view.auth.login.admin");
     Route::post("/login",                        [LoginController::class,"login"])->name("web.auth.login");

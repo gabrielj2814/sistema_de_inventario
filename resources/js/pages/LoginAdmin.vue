@@ -119,7 +119,7 @@ function login(){
                             <div class="col-12 mb-4">
                                 <div class="form-group">
                                     <label for="email" class="form-label text-white" >Email</label>
-                                    <input type="text" id="email" class="form-control" placeholder="Email" autocomplete="false" v-model="state.email" :class="{ 'error-field':state.emailError }">
+                                    <input type="text" id="email" class="form-control" placeholder="Email" autocomplete="off" v-model="state.email" :class="{ 'error-field':state.emailError }">
                                 </div>
                             </div>
                             <div class="col-12 mb-4">
